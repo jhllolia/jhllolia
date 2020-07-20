@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="payment">
+
+	<!-- 메인 페이지 미팅 / 이벤트 / 인원 -->
+	<select id="selectProductBuyCheck" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		IFNULL(SUM(PRODUCT_PRICE * PRODUCT_QTY), 0) 	AS PRODUCT_PRICE,
+						IFNULL(SUM(PRODUCT_QTY), 0)						AS PRODUCT_QTY,
+						(
+							SELECT 	COUNT(*)
+							FROM	bbs_payment_tb
+							WHERE	PAID_STATUS IN ('shipping_return','shipping_exchange')
+						) AS PAY_SEQ
+
+			FROM		bbs_payment_tb
+			WHERE		PAID_STATUS		!=	'cancelled'
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND			DATE(PAID_DATE)		BETWEEN	#{PAID_BEFORE_DATE}
+											AND		#{PAID_AFTER_DATE}
+			ORDER BY	PAID_DATE DESC
+
+		]]>
+	</select>
+
+	<!--  -->
+	<select id="getStatusMemberMemo" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT	BUYER_MEMO
+			FROM	bbs_payment_tb
+			WHERE	ORDER_NUM		=	#{ORDER_NUM}
+			AND		PAY_SEQ			=	#{PAY_SEQ}
+
+		]]>
+	</select>
+
+	<!--  -->
+	<select id="selectShippingCost" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		PRODUCT_SHIPPING_COST
+			FROM 		bbs_payment_tb
+			WHERE		PAID_STATUS		!=	'cancelled'
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND			DATE(PAID_DATE)		BETWEEN	#{PAID_BEFORE_DATE}
+											AND		#{PAID_AFTER_DATE}
+			GROUP BY	ORDER_NUM
+
+		]]>
+	</select>
+
+	<!--  -->
+   	<select id="selectAdminRefundList" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT	*
+			FROM	bbs_payment_tb
+			WHERE	ORDER_NUM	=	#{ORDER_NUM}
+			AND		PAY_SEQ		IN	(${LIST_KEYWORD})
+
+		]]>
+    </select>
+
+	<!--  -->
+	<select id="getProductReturnRequest" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_payment_tb
+			WHERE		PAID_STATUS IN 		('shipping_return','shipping_exchange')
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND			DATE(PAID_DATE)		BETWEEN	#{PAID_BEFORE_DATE}
+											AND		#{PAID_AFTER_DATE}
+			ORDER BY	ORDER_NUM
+
+		]]>
+	</select>
+
+	<!-- 리뷰 작성 전 구매상품 검증 -->
+	<select id="selectProductBuyValid" resultType="int" parameterType="java.util.HashMap">
+
+			SELECT		EXISTS 
+								(
+									SELECT	*
+									FROM	bbs_payment_tb
+									WHERE	ORDER_NUM		=	#{ORDER_NUM}
+									AND		PRODUCT_NUM		=	#{PRODUCT_NUM}
+									AND		PRODUCT_NAME	=	#{PRODUCT_NAME}
+									AND		PRODUCT_OPTION	=	#{PRODUCT_OPTION}
+									AND		PRODUCT_QTY		=	#{PRODUCT_QTY}
+								) 	AS		SUCCESS
+
+	</select>
+
+	<!--  -->
+	<select id="selectMemberValid" resultType="int" parameterType="java.util.HashMap">
+
+			SELECT		EXISTS 
+								(
+									SELECT	ORDER_NUM
+									FROM	bbs_payment_tb
+									WHERE	ORDER_NUM		=	#{ORDER_NUM}
+									AND		BUYER_EMAIL 	=	#{BUYER_EMAIL}
+								) 	AS		SUCCESS
+
+	</select>
+
+	<!-- 구매자 상세정보 출력 -->
+	<select id="selectShortPerson" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		* 
+			FROM		bbs_payment_tb 
+			WHERE		BUYER_PAID_STATUS	=	#{BUYER_PAID_STATUS}
+			AND			PAID_USER_DATE 		=	#{PAID_USER_DATE}
+			AND			PAID_USER_TIME 		=	#{PAID_USER_TIME}
+			AND			TAB_NUM				=	#{TAB_NUM}
+
+		]]>
+	</select>
+
+	<!-- ADMIN 대시보드 -->
+	<select id="adminSelectDashBoard" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		A.PRODUCT_SEQ,
+						A.PRODUCT_STATE,
+						A.PRODUCT_TITLE,
+						A.PRODUCT_PRICE,
+						B.PRODUCT_FILE_STATE,
+						B.PRODUCT_FILE_TITLE,
+						B.PRODUCT_FILE_NAME
+			FROM		bbs_product_tb 			A
+			LEFT JOIN	bbs_product_file_tb 	B
+			ON			A.PRODUCT_SEQ 			=	B.PRODUCT_SEQ
+
+			WHERE		A.PRODUCT_STATE 		NOT IN ('N','D')
+			AND			B.PRODUCT_FILE_TITLE 	= ANY	(
+															SELECT		MIN( B.PRODUCT_FILE_TITLE ) 
+															FROM		bbs_product_file_tb B 
+															GROUP BY	B.PRODUCT_SEQ
+														)
+			GROUP BY	A.PRODUCT_SEQ
+
+		]]>
+	</select>
+
+	<!-- ADMIN 대시보드 검색 -->
+	<select id="selectRequestPayment" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_payment_tb
+			WHERE		DATE(PAID_DATE)		BETWEEN	#{PAID_BEFORE_DATE}
+											AND		#{PAID_AFTER_DATE}
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			ORDER BY	PAID_DATE DESC
+
+		]]>
+	</select>
+
+	<!-- ADMIN 대시보드 검색 -->
+	<select id="adminSelectPayment" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_payment_tb
+			WHERE		PAID_STATUS		IN	(${PAID_STATUS})
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND			DATE(PAID_DATE)		BETWEEN	#{PAID_BEFORE_DATE}
+											AND		#{PAID_AFTER_DATE}
+			ORDER BY	PAID_DATE DESC
+
+		]]>
+	</select>
+
+	<!-- 회원 결제 상태 출력 -->
+	<select id="memberPaymentList" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		PAY_SEQ,
+						ORDER_NUM,
+						IMP_UID,
+						MERCHANT_UID,
+						PRODUCT_NUM,
+						(
+							SELECT	MIN(PRODUCT_FILE_NAME)
+							FROM	bbs_product_file_tb
+							WHERE	PRODUCT_FILE_STATE	=	'Y'
+							AND		PRODUCT_NUM			= PRODUCT_SEQ
+						) AS PRODUCT_PROFILE,
+						PRODUCT_NAME,
+						PRODUCT_OPTION,
+						PRODUCT_QTY,
+						PRODUCT_PRICE,
+						PRODUCT_SHIPPING_NUM,
+						PRODUCT_SHIPPING_COURIER,
+						PRODUCT_SHIPPING_COST,
+						PAID_STATUS,
+						PAID_METHOD,
+						BUYER_RETURN_STATE,
+						BUYER_RETURN_CONTENT,
+						BUYER_SEQ,
+						BUYER_PAID_STATUS,
+						BUYER_NAME,
+						BUYER_EMAIL,
+						BUYER_TEL,
+						BUYER_PAID_TOTAL,
+						REVIEW_EXIST,
+						PAID_DATE
+			FROM		bbs_payment_tb 
+			WHERE		BUYER_EMAIL			=	#{BUYER_EMAIL}
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND			DATE(PAID_DATE)		BETWEEN #{PAID_BEFORE_DATE} AND #{PAID_AFTER_DATE}
+			AND			PAID_STATUS		IN	(${BUYER_PAID_STATUS})
+			ORDER BY	ORDER_NUM 			DESC
+
+		]]>
+	</select>
+
+	<sql id="search">
+		<choose>
+			<when test="LIST_STATE == 't'.toString()">
+				AND	ORDER_NUM LIKE CONCAT('%', #{LIST_KEYWORD}, '%')
+			</when>
+			<when test="LIST_STATE == 'c'.toString()">
+				AND PRODUCT_NAME LIKE CONCAT('%', #{LIST_KEYWORD}, '%')
+			</when>
+			<when test="LIST_STATE == 'tc'.toString()">
+				AND BUYER_TEL LIKE CONCAT('%', #{LIST_KEYWORD}, '%')
+			</when>
+			<when test="LIST_STATE == 'tx'.toString()">
+				AND BUYER_EMAIL LIKE CONCAT('%', #{LIST_KEYWORD}, '%')
+			</when>
+		</choose>
+	</sql>
+
+	<!-- 반품 / 취소 버튼 클릭 시 데이터 조회 -->
+	<select id="getStatusProductData" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT	*
+			FROM	bbs_payment_tb
+			WHERE	PAY_SEQ 	IN	(${LIST_STATE})
+			AND		BUYER_SEQ	=	#{BUYER_SEQ}
+
+		]]>
+	</select>
+
+	<!--  -->
+	<select id="selectOrderPayCount" parameterType="String" resultType="Integer">
+
+		SELECT	IFNULL(COUNT(*), 0)
+		FROM	bbs_payment_tb
+		WHERE	PAID_STATUS 		!=	'cancelled'
+		AND		ORDER_NUM 			=	#{ORDER_NUM}
+
+	</select>
+
+	<!--  -->
+	<select id="selectProductCount" parameterType="String" resultType="Integer">
+
+		SELECT	IFNULL(COUNT(*), 0)
+		FROM	bbs_payment_tb
+		WHERE	PAID_STATUS 		=	'cancelled'
+		AND		ORDER_NUM 			=	#{ORDER_NUM}
+
+	</select>
+
+	<!-- 배송비 출력 -->
+	<select id="selectCancelShippingCost" parameterType="String" resultType="Integer">
+
+		SELECT	PRODUCT_SHIPPING_COST
+		FROM	bbs_payment_tb
+		WHERE	PAID_STATUS		!=	'cancelled'
+		AND		ORDER_NUM 		=	#{ORDER_NUM}
+
+	</select>
+
+	<!-- 현재 선택된 테이블 날짜 / 시간 인원 Count -->
+	<select id="selectPersonCount" parameterType="String" resultType="Integer">
+
+		SELECT	COUNT(*) 
+		FROM	bbs_payment_tb
+		WHERE	BUYER_PAID_STATUS 	=	'paid'
+		AND		PAID_USER_DATE 		=	#{PAID_USER_DATE}
+		AND		PAID_USER_TIME 		=	#{PAID_USER_TIME}
+		AND		TAB_NUM				=	#{TAB_NUM}
+
+	</select>
+
+	<!-- 결제 테이블 INSERT -->
+	<select id="selectPayComplete" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_payment_tb
+			WHERE		ORDER_NUM	=	#{ORDER_NUM}
+			AND			IMP_UID 	=	#{IMP_UID}
+			AND			BUYER_EMAIL	=	#{BUYER_EMAIL}
+
+		]]>
+	</select>
+
+	<!-- 결제 테이블 INSERT -->
+	<insert id="insertTablePaid" useGeneratedKeys="true" keyProperty="PAY_SEQ" parameterType="java.util.HashMap">
+
+		INSERT	INTO	bbs_payment_tb
+										(
+											ORDER_NUM,
+											IMP_UID,
+											MERCHANT_UID,
+											PRODUCT_NUM,
+											PRODUCT_PROFILE,
+											PRODUCT_NAME,
+											PRODUCT_OPTION,
+											PRODUCT_QTY,
+											PRODUCT_PRICE,
+											PRODUCT_SHIPPING_COST,
+											PAID_STATUS,
+											PAID_METHOD,
+											PAID_PG_PROVIDER,
+											PAID_RECEIPT,
+											PAID_PG_TID,
+											BUYER_SEQ,
+											BUYER_PAID_STATUS,
+											BUYER_NAME,
+											BUYER_POSTCODE,
+											BUYER_ADDR,
+											BUYER_EMAIL,
+											BUYER_TEL,
+											BUYER_MEMO,
+											BUYER_PAID_TOTAL,
+											PAID_DATE
+										)
+							VALUES
+										(
+											#{ORDER_NUM},
+											#{IMP_UID},
+											#{MERCHANT_UID},
+											#{PRODUCT_NUM},
+											#{PRODUCT_PROFILE},
+											#{PRODUCT_NAME},
+											#{PRODUCT_OPTION},
+											#{PRODUCT_QTY},
+											#{PRODUCT_PRICE},
+											#{PRODUCT_SHIPPING_COST},
+											#{PAID_STATUS},
+											#{PAID_METHOD},
+											#{PAID_PG_PROVIDER},
+											#{PAID_RECEIPT},
+											#{PAID_PG_TID},
+											#{BUYER_SEQ},
+											#{BUYER_PAID_STATUS},
+											#{BUYER_NAME},
+											#{BUYER_POSTCODE},
+											#{BUYER_ADDR},
+											#{BUYER_EMAIL},
+											#{BUYER_TEL},
+											#{BUYER_MEMO},
+											#{BUYER_PAID_TOTAL},
+											NOW()
+										)
+
+	</insert>
+
+	<!-- 반품 / 교환 상태로 변경 -->
+	<update id="applyReturnProduct" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_payment_tb
+		SET		PAID_STATUS				=	#{PAID_STATUS},
+				BUYER_RETURN_STATE		=	#{BUYER_RETURN_STATE},
+				BUYER_RETURN_CONTENT	=	#{BUYER_RETURN_CONTENT}
+		WHERE	BUYER_EMAIL				=	#{BUYER_EMAIL}
+		AND		PAY_SEQ					IN	(${LIST_KEYWORD})
+		
+	</update>
+
+	<!-- 주문 상태 변경 (선택) -->
+	<update id="updateSeveralStatus" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_payment_tb
+		SET		PAID_STATUS		=	#{PAID_STATUS}
+		WHERE	PAY_SEQ			IN	(${LIST_STATE})
+
+	</update>
+
+	<!-- 배송비 등록 / 수정 -->
+	<update id="addShippingCourier" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_payment_tb
+		SET		PRODUCT_SHIPPING_NUM		=	#{PRODUCT_SHIPPING_NUM},
+				PRODUCT_SHIPPING_COURIER 	=	#{PRODUCT_SHIPPING_COURIER}
+		WHERE	ORDER_NUM					=	#{ORDER_NUM}
+
+	</update>
+
+	<!-- 결제 취소 DB 변경 -->
+	<update id="updatePaymentStatus" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_payment_tb
+		SET		PAID_STATUS 			=	#{status},
+				PAID_RECEIPT			=	#{receipt_url},
+				BUYER_PAID_STATUS		=	'false',
+				BUYER_MEMO				=	#{reason},
+				PAID_DATE				=	now()
+		WHERE	IMP_UID					=	#{imp_uid}
+		AND		MERCHANT_UID			=	#{merchant_uid}
+		AND		PAY_SEQ					=	#{pay_seq}
+
+	</update>
+
+	<!-- 회원 프로필 이미지 출력 -->
+	<select id="selectPaymentProfile" parameterType="int" resultType="String">
+
+		SELECT	member_Profile
+		FROM	member_tb
+		WHERE	member_state 	=	'Y'
+		AND		member_Seq		=	#{member_Seq}
+
+	</select>
+
+</mapper>

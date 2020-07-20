@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tosok.user.DAO.GCBusDAO">
+
+	<select id="selectStation" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+
+			SELECT
+				    NODEID,
+				    NODENAME,
+				    NODENO,
+				    GPSLATI AS LAT,
+				    GPSLONG AS LNG
+   			FROM	NODE_INFO
+   			WHERE	NODENAME	LIKE	CONCAT('%', #{NODENAME}, '%')
+
+		]]>
+	</select>
+
+	<select id="selectBusList" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+
+			SELECT
+				    NODEID,
+				    NODENAME,
+				    NODENO,
+				    GPSLATI AS LAT,
+				    GPSLONG AS LNG
+   			FROM	NODE_INFO
+   			WHERE	GPSLATI > (#{LAT} - 0.002) 
+   			AND		GPSLATI < (#{LAT} + 0.002)
+   			AND		GPSLONG > (#{LNG} - 0.002)
+   			AND		GPSLONG < (#{LNG} + 0.002)
+
+		]]>
+	</select>
+
+	<select id="selectNodeId" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+
+			SELECT (
+						SELECT	COUNT(*)
+						FROM	NODE_ROUTE
+						WHERE	NODEID = #{NODEID} 
+			) AS TOTAL_COUNT,
+						route.ROUTEID,
+						route.ROUTENO,
+						info.STARTNODENM,
+						info.ENDNODENM
+			FROM		NODE_ROUTE route, ROUTE_INFO info
+			WHERE		route.ROUTEID = info.ROUTEID 
+			AND			route.NODEID = #{NODEID} 
+			ORDER BY	ROUTENO
+			LIMIT 		#{PAGE_NO}, #{ROW_COUNT}
+
+		]]>
+	</select>
+
+	<select id="selectRouteId" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+
+			SELECT		ROUTEID,
+						ROUTENO,
+						STARTNODENM,
+						ENDNODENM,
+						STARTVEHICLETIME,
+						ENDVEHICLETIME
+			FROM 		ROUTE_INFO
+			WHERE		ROUTEID = #{routeid}
+			ORDER BY	ROUTENO
+
+		]]>
+	</select>
+
+	<select id="selectRoutePath" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+
+			SELECT		route.ROUTEID,
+						route.NODEORD,
+						route.NODENAME,
+						route.NODEID,
+						node.GPSLATI AS LAT,
+						node.GPSLONG AS LNG
+			FROM		ROUTE_ORDER route, NODE_INFO node
+			WHERE		route.ROUTEID = #{routeid} 
+			AND			route.NODEID = node.NODEID
+			ORDER BY	NODEORD
+
+		]]>
+	</select>
+    
+   	<insert id="insertNodeRouteInfo" parameterType="HashMap">
+		<![CDATA[
+
+			INSERT IGNORE INTO NODE_ROUTE(
+				    						NODEID,
+		    								NODENAME,
+										    ROUTEID,
+										    ROUTENO
+   			) VALUES (
+					    #{NODEID},
+					    #{NODENAME},
+					    #{ROUTEID},
+					    #{ROUTENO}
+   			)
+
+  		]]>
+	</insert>
+	
+	<insert id="insertRouteOrder" parameterType="HashMap">
+  		<![CDATA[
+
+   			INSERT IGNORE INTO ROUTE_ORDER (
+								    			ROUTEID,
+											    NODEORD,
+											    NODENAME,
+											    NODEID
+   			) VALUES (
+					    #{ROUTEID},
+					    #{NODEORD},
+					    #{NODENAME},
+					    #{NODEID}
+   			)
+
+		]]>
+	</insert>
+
+	<insert id="insertRouteInfo" parameterType="HashMap">
+		<![CDATA[
+
+			INSERT IGNORE INTO ROUTE_INFO (
+										    ROUTEID,
+										    ROUTENO,
+										    STARTNODENM,
+										    ENDNODENM,
+										    STARTVEHICLETIME,
+										    ENDVEHICLETIME
+			) VALUES (
+						#{ROUTEID},
+						#{ROUTENO},
+						#{STARTNODENM},
+						#{ENDNODENM},
+						#{STARTVEHICLETIME},
+						#{ENDVEHICLETIME}
+			)
+
+		]]>
+	</insert>
+	
+	<insert id="insertNodeInfo" parameterType="HashMap">
+		<![CDATA[
+
+		   INSERT INTO NODE_INFO (
+										    NODEID,
+										    NODENO,
+										    NODENAME,
+										    GPSLATI,
+										    GPSLONG
+		   ) VALUES (
+					    #{NODEID},
+					    #{NODENO},
+					    #{NODENAME},
+					    #{LAT},
+					    #{LNG}
+		   )
+
+		]]>
+	</insert>
+
+</mapper>

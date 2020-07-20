@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VisitCounter">
+
+	<select id="selectExcelList" resultType="com.tosok.user.VO.VisitCountVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_visitor_tb
+
+		]]>
+		<include refid="search" />
+	</select>
+
+	<select id="selectVisitCount" resultType="int" parameterType="java.util.HashMap">
+		<![CDATA[
+
+	    	SELECT	count(VISIT_ID)
+	    	FROM	bbs_visitor_tb
+
+		]]>
+		<include refid="search" />
+    </select>
+
+	<select id="listVisitDao" resultType="com.tosok.user.VO.VisitCountVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		*
+			FROM		bbs_visitor_tb
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			ORDER BY	VISIT_ID DESC
+			LIMIT		#{pageStart}, 10
+
+		]]>
+	</select>
+
+	<select id="getVisitCnt" resultType="int" parameterType="java.util.HashMap">
+		<![CDATA[
+
+	    	SELECT	count(VISIT_ID)
+	    	FROM	bbs_visitor_tb
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+	    	AND		VISIT_ID > 0
+
+		]]>
+    </select>
+
+	<sql id="search">
+		<choose>
+			<when test="keyword != null">
+				WHERE	DATE_FORMAT(VISIT_TIME,'%Y-%m-%d') = '${keyword}'
+			</when>
+			<otherwise>
+				WHERE	VISIT_TIME > CURRENT_DATE( )
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="getVisitTotalCount" resultType="int">
+
+		SELECT	COUNT(*)
+		FROM	bbs_visitor_tb
+
+	</select>
+
+	<select id="getVisitTodayCount" resultType="int">
+
+		SELECT	COUNT(*)
+		FROM	bbs_visitor_tb
+		WHERE	VISIT_TIME > CURRENT_DATE( );
+
+	</select>
+
+	<insert id="insertVisitor" parameterType="com.tosok.user.VO.VisitCountVO">
+
+		INSERT	INTO	bbs_visitor_tb
+										(
+											VISIT_IP,
+											VISIT_TIME,
+											<if test="visit_refer != null and visit_refer !=''">
+												VISIT_REFER,
+											</if>
+											VISIT_AGENT
+										)
+								VALUES
+										(
+											#{visit_ip},
+											now(),
+											<if test="visit_refer != null and visit_refer !=''">
+												#{visit_refer},
+											</if>
+											#{visit_agent}
+										)
+
+	</insert>
+
+</mapper>

@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/tosok/user/Controller/CartController.java=UTF-8
+encoding//src/main/java/com/tosok/user/Controller/GCBusController.java=UTF-8
+encoding//src/main/java/com/tosok/user/Controller/HomeController.java=UTF-8
+encoding//src/main/java/com/tosok/user/Controller/MemberController.java=UTF-8
+encoding//src/main/java/com/tosok/user/Controller/QnAController.java=UTF-8
+encoding//src/main/java/com/tosok/user/Controller/ReceipeController.java=UTF-8
+encoding//src/main/java/com/tosok/user/DAO/GCBusDAO.java=UTF-8
+encoding//src/main/java/com/tosok/user/Until/Criteria.java=UTF-8
+encoding//src/main/java/com/tosok/user/Until/PageMaker.java=UTF-8
+encoding//src/main/webapp/WEB-INF/config/log4j.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/views/footer.jsp=UTF-8
+encoding//src/main/webapp/resources/css/main.css=UTF-8
+encoding//src/main/webapp/resources/css/menu.css=UTF-8

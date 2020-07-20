@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reserve">
+
+	<!-- Main 페이지 -->
+	<select id="selectMainPageProductList" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		A.PRODUCT_SEQ,
+						A.PRODUCT_STATE,
+						A.PRODUCT_SALE_MODE,
+						A.PRODUCT_SUB_INFO,
+						A.PRODUCT_SELL,
+						A.PRODUCT_TITLE,
+						(
+							SELECT		MIN(PRODUCT_FILE_NAME)
+							FROM		bbs_product_file_tb
+							WHERE		PRODUCT_SEQ 		=	A.PRODUCT_SEQ
+							AND			PRODUCT_FILE_STATE 	=	'Y'
+							AND			ORD					=	0
+						) AS PRODUCT_MIN_IMG,
+						(
+							SELECT		MIN(PRODUCT_FILE_NAME)
+							FROM		bbs_product_file_tb
+							WHERE		PRODUCT_SEQ 		=	A.PRODUCT_SEQ
+							AND			PRODUCT_FILE_STATE 	=	'Y'
+							AND			ORD					=	1
+						) AS PRODUCT_MAX_IMG
+			FROM		bbs_product_tb 			A
+			WHERE		PRODUCT_STATE 		=	#{PRODUCT_STATE}
+			GROUP BY	PRODUCT_SEQ	DESC
+			ORDER BY	FIELD(PRODUCT_SALE_MODE,'SLEEVE') DESC, 
+						PRODUCT_SEQ ASC 
+
+		]]>
+	</select>
+
+	<!-- 테이블 리스트 (사용자) -->
+	<select id="selectTableList" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		A.PRODUCT_SEQ,
+						A.PRODUCT_STATE,
+						A.PRODUCT_TITLE,
+						A.PRODUCT_CONTENT,
+						B.PRODUCT_FILE_STATE,
+						B.PRODUCT_FILE_TITLE,
+						B.PRODUCT_FILE_NAME
+			FROM		bbs_product_tb 			A
+			LEFT JOIN	bbs_product_file_tb 	B
+			ON			A.PRODUCT_SEQ 			= B.PRODUCT_SEQ
+			WHERE		A.PRODUCT_STATE 		=	'Y'
+			AND			B.PRODUCT_FILE_TITLE	=	ANY	(
+															SELECT		MIN( B.PRODUCT_FILE_TITLE ) 
+															FROM		bbs_product_file_tb B 
+															GROUP BY	B.PRODUCT_SEQ
+														)
+			ORDER BY	A.PRODUCT_SEQ	DESC
+
+		]]>
+	</select>
+
+	<select id="getProductInfo" resultType="com.tosok.user.VO.PayVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT	PAY_SEQ,
+					ORDER_NUM,
+					IMP_UID,
+					MERCHANT_UID,
+					PRODUCT_NUM,
+					(
+						SELECT	MIN(PRODUCT_FILE_NAME)
+						FROM	bbs_product_file_tb
+						WHERE	PRODUCT_FILE_STATE	=	'Y'
+						AND		PRODUCT_NUM			= PRODUCT_SEQ
+					) AS PRODUCT_PROFILE,
+					PRODUCT_NAME,
+					PRODUCT_OPTION,
+					PRODUCT_QTY,
+					PRODUCT_PRICE,
+					PRODUCT_SHIPPING_NUM,
+					PRODUCT_SHIPPING_COURIER,
+					PRODUCT_SHIPPING_COST,
+					PAID_STATUS,
+					PAID_METHOD,
+					PAID_PG_PROVIDER,
+					PAID_RECEIPT,
+					PAID_PG_TID,
+					BUYER_RETURN_STATE,
+					BUYER_RETURN_CONTENT,
+					BUYER_SEQ,
+					BUYER_PAID_STATUS,
+					BUYER_NAME,
+					BUYER_POSTCODE,
+					BUYER_ADDR,
+					BUYER_EMAIL,
+					BUYER_TEL,
+					BUYER_MEMO,
+					BUYER_PAID_TOTAL,
+					REVIEW_EXIST,
+					PAID_DATE
+			FROM	bbs_payment_tb
+			WHERE	ORDER_NUM		=	#{ORDER_NUM}
+
+		]]>
+		<include refid="search" />
+		<![CDATA[
+
+			AND		BUYER_EMAIL		=	#{BUYER_EMAIL}
+
+		]]>
+    </select>
+
+	<sql id="search">
+		<if test="REVIEW_EXIST != null">
+
+			AND REVIEW_EXIST	=	#{REVIEW_EXIST}
+
+		</if>
+	</sql>
+
+	<!--  -->
+   	<select id="selectProductReviewCount" resultType="com.tosok.user.VO.ReviewVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT	ROUND(AVG(VIEW_POINT))	AS AVG_COUNT,
+					COUNT(*) 				AS REV_COUNT
+			FROM	bbs_review_tb
+			WHERE	PRODUCT_NUM		=	#{PRODUCT_NUM}
+
+		]]>
+    </select>
+
+	<!-- 테이블 리스트 Count ( 테이블 상태 => 활성화 ) -->
+   	<select id="tableStateYCount" resultType="int" parameterType="java.util.HashMap">
+		<![CDATA[
+
+	    	SELECT	COUNT(PRODUCT_SEQ)
+	    	FROM	bbs_product_tb
+			WHERE	PRODUCT_STATE 		=	'Y'
+
+		]]>
+    </select>
+
+	<!-- 각 테이블 결제 정보출력 -->
+	<select id="payTableInfo" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT		A.*,
+						MIN(B.PRODUCT_FILE_NAME)	AS PRODUCT_FILE_NAME
+			FROM		bbs_product_tb				AS A
+			LEFT JOIN	bbs_product_file_tb 		AS B
+			ON			(
+							A.PRODUCT_SEQ = B.PRODUCT_SEQ
+						)
+			WHERE		B.PRODUCT_FILE_STATE 		=	'Y'
+			AND			B.PRODUCT_FILE_TITLE 		=	(
+															SELECT	MIN(PRODUCT_FILE_TITLE)
+															FROM	bbs_product_file_tb
+														)
+
+			AND			B.PRODUCT_FILE_TITLE 		LIKE	CONCAT('%', 'file', '%')
+			AND 		A.PRODUCT_SEQ 				=	#{PRODUCT_SEQ}
+
+		]]>
+	</select>
+
+	<!-- 주문 테이블 리스트 ( USER / ADMIN ) -->
+	<select id="listTableOrder" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		A.*,
+						(
+							SELECT		MIN(PRODUCT_FILE_NAME)
+							FROM		bbs_product_file_tb
+							WHERE		PRODUCT_SEQ 		=	A.PRODUCT_SEQ
+							AND			PRODUCT_FILE_STATE 	=	'Y'
+							AND			ORD					=	0
+						) AS PRODUCT_FILE_NAME
+			FROM		bbs_product_tb 			A
+			WHERE		PRODUCT_STATE			!=	'D'
+			ORDER 	BY	PRODUCT_SEQ DESC
+			LIMIT		#{pageStart}, #{perPageNum}
+
+		]]>
+	</select>
+
+	<!-- 각 테이블 카운트 ( ADMIN ) -->
+   	<select id="selectTableCount" resultType="int" parameterType="java.util.HashMap">
+		<![CDATA[
+
+	    	SELECT	COUNT(PRODUCT_SEQ)
+	    	FROM	bbs_product_tb
+
+		]]>
+    </select>
+
+	<!-- 각 테이블 정보 출력 ( 수정 / 삭제 / 상태 변경 ) -->
+	<select id="selectTableInfo" resultType="com.tosok.user.VO.ProductVO">
+
+		SELECT		*,
+					(
+						SELECT	MIN(PRODUCT_FILE_NAME)
+						FROM	bbs_product_file_tb
+						WHERE	PRODUCT_FILE_STATE 	=	'Y'
+						AND		PRODUCT_SEQ 		=	A.PRODUCT_SEQ
+						AND		ORD					=	0
+					) AS PRODUCT_FILE_NAME
+		FROM		bbs_product_tb 	A
+		WHERE		PRODUCT_SEQ 	=	#{PRODUCT_SEQ}
+
+	</select>
+
+	<!-- 각 테이블 슬라이드 이미 -->
+	<select id="selectTableFile" resultType="com.tosok.user.VO.ProductVO">
+
+		SELECT		*
+		FROM		bbs_product_file_tb
+		WHERE		PRODUCT_SEQ 			=		#{PRODUCT_SEQ}
+		AND			PRODUCT_FILE_STATE 		=		'Y'
+		AND			PRODUCT_FILE_TITLE		LIKE	CONCAT('%', 'file', '%')
+		ORDER BY	ORD
+
+	</select>
+
+	<!-- 테이블 등록 -->
+	<insert id="insertSeatTable" parameterType="java.util.HashMap">
+
+		INSERT	INTO	bbs_product_tb
+										(
+											PRODUCT_SALE_MODE,
+											PRODUCT_INFO,
+											PRODUCT_SUB_INFO,
+											PRODUCT_TITLE,
+											PRODUCT_CONTENT,
+											PRODUCT_SHIPPING_TXT,
+											PRODUCT_RETURN_TXT,
+											REGISTER_DATE
+										)
+						VALUES
+										(
+											#{PRODUCT_SALE_MODE},
+											#{PRODUCT_INFO},
+											#{PRODUCT_SUB_INFO},
+											#{PRODUCT_TITLE},
+											#{PRODUCT_CONTENT},
+											#{PRODUCT_SHIPPING_TXT},
+											#{PRODUCT_RETURN_TXT},
+											NOW()
+										)
+
+		<selectKey resultType="int" keyProperty="PRODUCT_SEQ" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+
+	<!-- 등록된 테이블 파일업로드 ( 슬라이드 / 로고 ) -->
+	<insert id="insertFileUpload" parameterType="java.util.HashMap">
+
+		INSERT	INTO	bbs_product_file_tb
+											(
+												PRODUCT_SEQ,
+												PRODUCT_FILE_TITLE,
+												PRODUCT_FILE_NAME,
+												PRODUCT_FILE_SIZE
+											)
+								VALUES
+											(
+												#{PRODUCT_SEQ},
+												#{PRODUCT_FILE_TITLE},
+												#{PRODUCT_FILE_NAME},
+												#{PRODUCT_FILE_SIZE}
+											)
+
+	</insert>
+	
+	<!-- 배송비 설정 -->
+	<update id="updateShippingCost" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_tb 
+		SET 	PRODUCT_SHIPPING	=	#{PRODUCT_SHIPPING}
+		WHERE	PRODUCT_SEQ			=	#{PRODUCT_SEQ}
+
+	</update>
+	
+	<!-- 배송비 설정 -->
+	<update id="updateProductChange" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_tb 
+		SET 	PRODUCT_SUB_INFO	=	#{PRODUCT_SUB_INFO}
+		WHERE	PRODUCT_SEQ			=	#{PRODUCT_SEQ}
+
+	</update>
+
+	<!-- 선택된 테이블 삭제 ( 테이블 상태 => 삭제 로 변경 ) -->
+	<update id="deleteSeatTable" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_tb 
+		SET 	PRODUCT_STATE	=	#{PRODUCT_STATE}
+		WHERE	PRODUCT_SEQ		=	#{PRODUCT_SEQ}
+
+	</update>
+
+	<!-- 각 선택 된 테이블 정보 변경 -->
+	<update id="updateSeatTable" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_tb 
+		SET 	PRODUCT_SALE_MODE		=	#{PRODUCT_SALE_MODE},
+				PRODUCT_INFO			=	#{PRODUCT_INFO},
+				PRODUCT_SUB_INFO		=	#{PRODUCT_SUB_INFO},
+				PRODUCT_TITLE			=	#{PRODUCT_TITLE},
+				PRODUCT_CONTENT			=	#{PRODUCT_CONTENT},
+				PRODUCT_SHIPPING_TXT	=	#{PRODUCT_SHIPPING_TXT},
+				PRODUCT_RETURN_TXT		=	#{PRODUCT_RETURN_TXT}
+		WHERE	PRODUCT_SEQ				=	#{PRODUCT_SEQ}
+
+	</update>
+
+	<!-- 각 선택 된 테이블 이미지 수정 -->
+	<update id="updateFileUpload" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_file_tb 
+		SET 	PRODUCT_FILE_TITLE		=	#{PRODUCT_FILE_TITLE},
+				PRODUCT_FILE_NAME		=	#{PRODUCT_FILE_NAME},
+				PRODUCT_FILE_SIZE		=	#{PRODUCT_FILE_SIZE}
+		WHERE	PRODUCT_SEQ				=	#{PRODUCT_SEQ}
+		AND		PRODUCT_FILE_TITLE		= 	#{PRODUCT_FILE_TITLE}
+
+	</update>
+
+	<!-- 각 선택 된 테이블 이미지 삭제 -->
+	<update id="deleteSlideImgFile" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_file_tb 
+		SET 	PRODUCT_FILE_STATE		=	#{PRODUCT_FILE_STATE}
+		WHERE	PRODUCT_SEQ				=	#{PRODUCT_SEQ}
+		AND		PRODUCT_FILE_TITLE 		=	#{PRODUCT_FILE_TITLE}
+
+	</update>
+
+	<!--  -->
+	<select id="selectFileOrd" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+
+		SELECT		*
+		FROM		bbs_product_file_tb
+		WHERE		PRODUCT_FILE_STATE		=	'Y'
+		AND			PRODUCT_SEQ 			=	#{PRODUCT_SEQ}
+
+	</select>
+
+	<update id="updateListSort" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_file_tb 
+		SET 	ORD					=	#{ORD}
+		WHERE	FILE_SEQ			=	#{FILE_SEQ}
+	
+	</update>
+	
+	<delete id="deleteFileOrd" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_file_tb 
+		SET 	ORD					=	''
+		WHERE	PRODUCT_SEQ			=	#{PRODUCT_SEQ}
+
+	</delete>
+
+	<!--  -->
+	<update id="updateProductOrd" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_product_file_tb 
+		SET 	ORD					=	#{ORD}
+		WHERE	PRODUCT_SEQ			=	#{PRODUCT_SEQ}
+		AND		PRODUCT_FILE_TITLE	=	#{PRODUCT_FILE_TITLE}
+
+	</update>
+
+	<!-- 테이블 수정 시에 이미지 존재 여부 ( 기존 이미지가 그대로 있다면 Pass ) -->
+	<select id="selectFileExist" resultType="int" parameterType="java.util.HashMap">
+
+		SELECT		EXISTS 
+							(
+								SELECT	PRODUCT_FILE_TITLE
+								FROM	bbs_product_file_tb
+								WHERE	PRODUCT_FILE_STATE		= 	'Y'
+								AND		PRODUCT_FILE_TITLE		=	#{PRODUCT_FILE_TITLE}
+								AND		PRODUCT_SEQ 			=	#{PRODUCT_SEQ}
+							) 	AS		SUCCESS
+
+	</select>
+
+	<!--  -->
+	<select id="selectProductValid" resultType="int" parameterType="java.util.HashMap">
+
+		SELECT		EXISTS 
+							(
+								SELECT	*
+								FROM	bbs_product_tb
+								WHERE	PRODUCT_STATE		= 	#{PRODUCT_STATE}
+								AND		PRODUCT_SEQ 		=	#{PRODUCT_SEQ}
+							) 	AS		SUCCESS
+
+	</select>
+
+</mapper>

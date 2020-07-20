@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cart">
+
+	<!--  -->
+	<select id="selectCartMemberList" resultType="com.tosok.user.VO.CartVO" parameterType="java.util.HashMap">
+		<![CDATA[
+
+			SELECT 		A.*,
+						B.PRODUCT_FILE_NAME
+			FROM		bbs_cart_tb				A
+			LEFT JOIN	bbs_product_file_tb 	B
+			ON			A.CART_ORDER 			= 	B.PRODUCT_SEQ
+			WHERE		A.CART_STATE 			=	'Y'
+			AND			A.CART_MEMBER			=	#{CART_MEMBER}
+			AND			B.PRODUCT_FILE_NAME	=	ANY	(
+														SELECT	MIN(B.PRODUCT_FILE_NAME) 
+														FROM	bbs_product_file_tb B 
+														WHERE	B.PRODUCT_FILE_STATE 	=	'Y' 
+														AND		B.PRODUCT_SEQ 			=	A.CART_ORDER
+													)
+			ORDER BY	A.CART_SEQ	DESC
+
+		]]>
+	</select>
+
+	<!--  -->
+	<select id="getCartProductUnit" resultType="com.tosok.user.VO.ProductVO" parameterType="java.util.HashMap">
+
+		SELECT	*
+		FROM	bbs_product_tb
+		WHERE	PRODUCT_SEQ		=	#{PRODUCT_SEQ}
+
+	</select>
+
+	<!-- 개인 장바구니 Count -->
+	<select id="selectCartCount" resultType="int" parameterType="java.util.HashMap">
+
+		SELECT		IFNULL(COUNT(A.CART_SEQ), 0)
+		FROM		bbs_cart_tb 			A
+		LEFT JOIN	bbs_product_tb 			B
+		ON			A.CART_ORDER 			= 	B.PRODUCT_SEQ
+		WHERE		A.CART_STATE			=	#{CART_STATE}
+		AND			A.CART_MEMBER			=	#{CART_MEMBER}
+		AND			B.PRODUCT_SALE_MODE		=	ANY	(
+														SELECT		B.PRODUCT_SALE_MODE
+														FROM		bbs_product_tb B
+														WHERE		B.PRODUCT_SALE_MODE		=	'SLEEVE'
+														GROUP BY	B.PRODUCT_SEQ
+													)
+
+	</select>
+
+	<!--  -->
+	<select id="haveMemberCartProduct" resultType="int" parameterType="java.util.HashMap">
+
+		SELECT		EXISTS 
+							(
+								SELECT	*
+								FROM	bbs_cart_tb
+								WHERE	CART_STATE				=	"Y"
+								AND		CART_PRODUCT_NUM		=	#{CART_PRODUCT_NUM}
+								AND		CART_PRODUCT_NAME		=	#{CART_PRODUCT_NAME}
+								AND		CART_PRODUCT_OPTION		=	#{CART_PRODUCT_OPTION}
+								AND		CART_MEMBER				=	#{CART_MEMBER}
+							) 	AS		SUCCESS
+
+	</select>
+
+	<!--  -->
+	<select id="selectCartProductVaild" resultType="int" parameterType="java.util.HashMap">
+
+		SELECT		EXISTS 
+							(
+								SELECT	*
+								FROM	bbs_cart_tb
+								WHERE	CART_SEQ		IN	(#{CART_SEQ})
+								AND		CART_MEMBER		=	#{CART_MEMBER}
+							) 	AS		SUCCESS
+
+	</select>
+
+	<!-- 장바구니 insert -->
+   	<insert id="insertCartProduct" parameterType="java.util.HashMap">
+
+		INSERT INTO bbs_cart_tb (
+									CART_ORDER, 
+							        CART_MEMBER,
+							        CART_PRODUCT_NUM,
+							        CART_PRODUCT_NAME,
+							        CART_PRODUCT_OPTION,
+							        CART_PRODUCT_QTY,
+									CART_PRODUCT_PRICE,
+									CART_PRODUCT_SALE,
+									CART_PRODUCT_SELL,
+									CART_DATE
+								)
+					VALUES		(
+									#{CART_ORDER},
+									#{CART_MEMBER},
+									#{CART_PRODUCT_NUM},
+									#{CART_PRODUCT_NAME},
+									#{CART_PRODUCT_OPTION},
+									#{CART_PRODUCT_QTY},
+									#{CART_PRODUCT_PRICE},
+									#{CART_PRODUCT_SALE},
+									#{CART_PRODUCT_SELL},
+									Now()
+								);
+
+	</insert>
+
+	<!--  -->
+	<update id="updateCartProductQty" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_cart_tb 
+		SET 	CART_PRODUCT_QTY	=	#{CART_PRODUCT_QTY}
+		WHERE	CART_MEMBER 		=	#{CART_MEMBER}
+		AND		CART_PRODUCT_NUM	=	#{CART_PRODUCT_NUM}
+		AND		CART_PRODUCT_NAME	=	#{CART_PRODUCT_NAME}
+		AND		CART_PRODUCT_OPTION	=	#{CART_PRODUCT_OPTION}
+
+	</update>
+
+	<!--  -->
+	<update id="updateCartUnitState" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_cart_tb 
+		SET 	CART_STATE			=	#{CART_STATE}
+		WHERE	CART_MEMBER 		=	#{CART_MEMBER}
+		AND		CART_PRODUCT_NAME	=	#{CART_PRODUCT_NAME}
+		AND		CART_PRODUCT_OPTION	=	#{CART_PRODUCT_OPTION}
+
+	</update>
+
+	<!--  -->
+	<update id="updateCartProductState" parameterType="java.util.HashMap">
+
+		UPDATE	bbs_cart_tb 
+		SET 	CART_STATE		=	#{CART_STATE}
+		WHERE	CART_SEQ		IN	(#{CART_SEQ})
+		AND		CART_MEMBER 	=	#{CART_MEMBER}
+
+	</update>
+
+</mapper>
