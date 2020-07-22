@@ -15,7 +15,7 @@ jQuery(function($) {
 			fn_review_none_exposure($(this));
 		});
 
-		/* ==================  ================== */
+		/* ================== 삭제 ================== */
 		function fn_review_none_exposure(obj) {
 			var form = "";
 			var idx = obj.attr('data-idx');
@@ -29,7 +29,7 @@ jQuery(function($) {
 			}
 		}
 		
-		/* ==================  ================== */
+		/* ================== 수정 ================== */
 		function fn_review_update(obj) {
 			var form = "";
 			var idx = obj.attr('data-idx');
@@ -48,7 +48,7 @@ jQuery(function($) {
 			$(form).appendTo("body").submit().remove();		// 조회
 		}
 
-		/* ==================  ================== */
+		/* ================== 리뷰 상세 ================== */
 		function fn_review_View(obj) {
 			var form = "";
 			form += "<form action='/rev/content' method='POST'>"; 
