@@ -178,6 +178,8 @@ public class ReserveController {
 			obj.addProperty("PRODUCT_NAME", list.get(i).getPRODUCT_NAME());
 			obj.addProperty("PRODUCT_OPTION", list.get(i).getPRODUCT_OPTION());
 			obj.addProperty("PRODUCT_QTY", list.get(i).getPRODUCT_QTY());
+			obj.addProperty("REVIEW_REPLY_YN", list.get(i).getREVIEW_REPLY_YN());
+			obj.addProperty("REVIEW_REPLY", list.get(i).getREVIEW_REPLY());
 			obj.addProperty("VIEW_SEQ", list.get(i).getVIEW_SEQ());
 			obj.addProperty("ORDER_NUM", list.get(i).getORDER_NUM());
 			obj.addProperty("VIEW_STATE", list.get(i).getVIEW_STATE());

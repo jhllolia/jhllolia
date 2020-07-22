@@ -1,6 +1,7 @@
 package com.tosok.user.DAO.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -293,6 +294,21 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int insertLoginData(LoginVO vo) {
 		return sqlSession.insert("member.insertLoginData", vo);
+	}
+
+	@Override
+	public List<ReviewVO> selectReview(ReviewVO vo) {
+		return sqlSession.selectList("member.selectReview", vo);
+	}
+
+	@Override
+	public int updateAdminReview(ReviewVO vo) {
+		return sqlSession.update("member.updateAdminReview", vo);
+	}
+
+	@Override
+	public int deleteAdminReview(ReviewVO vo) {
+		return sqlSession.update("member.deleteAdminReview", vo);
 	}
 
 }

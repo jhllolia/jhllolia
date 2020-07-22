@@ -520,4 +520,19 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.deleteReviewImg(vo);
 	}
 
+	@Override
+	public List<ReviewVO> selectReview(ReviewVO vo) {
+		return memberDao.selectReview(vo);
+	}
+
+	@Override
+	public int updateAdminReview(ReviewVO vo) {
+		return memberDao.updateAdminReview(vo);
+	}
+
+	@Override
+	public int deleteAdminReview(ReviewVO vo) {
+		return memberDao.deleteAdminReview(vo);
+	}
+
 }

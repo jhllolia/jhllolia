@@ -1,6 +1,7 @@
 package com.tosok.user.DAO;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -87,6 +88,11 @@ public interface MemberDAO {
 
 	public int deleteReviewImg(ReviewVO vo);
 	public int insertLoginData(LoginVO vo);
+
+	public List<ReviewVO> selectReview(ReviewVO vo);
+
+	public int updateAdminReview(ReviewVO vo);
+	public int deleteAdminReview(ReviewVO vo);
 
 	
 }

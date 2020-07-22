@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -111,6 +112,73 @@ public class HomeController {
 		mav.addObject("list", productList.listProductParam(vo, review));
 		mav.setViewName("/main");
 		return mav;
+	}
+	
+	/* ========== 방문자 통계 ========== */
+	@Secured("ROLE_ADMIN")
+	@RequestMapping("/review")
+	public ModelAndView review(ReviewVO vo) {
+		ModelAndView mav = new ModelAndView();
+
+		mav.addObject("list", memberService.selectReview(vo));
+		mav.setViewName("security/review");
+		return mav;
+	}
+
+	@RequestMapping("/rev/content")
+	@ResponseBody
+	public ModelAndView review_content(ReviewVO vo, HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+
+		vo.setORDER_NUM(req.getParameter("orderNum"));
+		vo.setREVIEW_ID(req.getParameter("rev_id"));
+		vo.setPRODUCT_NUM(req.getParameter("prdNum"));
+		vo.setPRODUCT_NAME(req.getParameter("prdName"));
+		vo.setPRODUCT_OPTION(req.getParameter("prdOpt"));
+		vo.setPRODUCT_QTY(req.getParameter("prdQty"));
+
+		mav.addObject("DATA", memberService.getProductReviewData(vo));
+		mav.setViewName("security/reviewForm");
+		return mav;
+	}
+
+	/* ==========  ========== */
+	@RequestMapping("/rev/admin")
+	@ResponseBody
+	public void adminReview(ReviewVO vo, HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = res.getWriter();
+
+		vo.setVIEW_SEQ(Integer.parseInt(req.getParameter("idx")));
+		vo.setREVIEW_REPLY_YN("Y");
+		vo.setREVIEW_REPLY(req.getParameter("content"));
+
+		int result = memberService.updateAdminReview(vo);
+
+		if(result > 0) {
+			out.println("<script>alert('등록이 완료되었습니다.'); location.href='../review';</script>");
+		} else {
+			out.println("<script>alert('등록에 실패했습니다.'); location.href='../review';</script>");
+		}
+	}
+
+	/* ==========  ========== */
+	@RequestMapping("/rev/delete")
+	@ResponseBody
+	public void adminReviewDelete(ReviewVO vo, HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = res.getWriter();
+
+		vo.setVIEW_SEQ(Integer.parseInt(req.getParameter("idx")));
+		vo.setVIEW_STATE("N");
+
+		int result = memberService.deleteAdminReview(vo);
+
+		if(result > 0) {
+			out.println("<script>alert('미노출이 완료되었습니다.'); location.href='../review';</script>");
+		} else {
+			out.println("<script>alert('미노출에 실패했습니다.'); location.href='../review';</script>");
+		}
 	}
 
 	/* ========== 방문자 통계 ========== */

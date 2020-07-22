@@ -15,6 +15,8 @@ public class ReviewVO {
 	private String VIEW_UPLOAD; // 후기 내용
 	private String REVIEW_ID;
 	private String REVIEW_NAME;
+	private String REVIEW_REPLY;
+	private String REVIEW_REPLY_YN;
 
 	private int AVG_COUNT;
 	private int REV_COUNT;
@@ -31,6 +33,22 @@ public class ReviewVO {
 	private String FILE_NAME; // 후기 파일 이름
 
 	private Date VIEW_DATE; // 등록, 수정 일
+
+	public String getREVIEW_REPLY_YN() {
+		return REVIEW_REPLY_YN;
+	}
+
+	public void setREVIEW_REPLY_YN(String rEVIEW_REPLY_YN) {
+		REVIEW_REPLY_YN = rEVIEW_REPLY_YN;
+	}
+
+	public String getREVIEW_REPLY() {
+		return REVIEW_REPLY;
+	}
+
+	public void setREVIEW_REPLY(String rEVIEW_REPLY) {
+		REVIEW_REPLY = rEVIEW_REPLY;
+	}
 
 	public int getAVG_COUNT() {
 		return AVG_COUNT;

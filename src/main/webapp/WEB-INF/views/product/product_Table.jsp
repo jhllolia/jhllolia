@@ -245,14 +245,12 @@
 							<p class="expli">고객 상품평은 주문관리 < 결제 상태에서 결제확인후 작성하실수 있습니다</p>
 
 							<!-- 
-
 							<div class="star_avr">
 								<div class="area">
 									<strong>구매고객 총별점</strong>
 								</div>
 								<div class="area"></div>
 							</div>
-
 							-->
 
 							<table id="list" class="paginated">

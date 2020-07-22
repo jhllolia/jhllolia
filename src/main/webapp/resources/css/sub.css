@@ -2264,6 +2264,42 @@ div.review_wrap div.review_img div.upload img {
     height: 100%;
 }
 
+.adm_wrap {
+    position: relative;
+    width: 100%;
+    margin: 0px;
+    padding: 15px 20px 15px 20px;
+    border: 1px solid #e3e1e1;
+    background-color: #f5f5f5;
+    word-break: break-all;
+    z-index: 9;
+}
+
+.adm_wrap:before {
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: -1px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid #e3e1e1;
+    border-bottom: 7px solid #e3e1e1;
+    border-right: 7px solid transparent;
+    border-top: 7px solid transparent;
+    z-index: 1;
+}
+
+.adm_wrap .adm_tit {
+	font-size: 13px;
+    font-weight: 500;
+    margin: 0px 0px 5px 0px;
+    letter-spacing: -1px;
+}
+
+.adm_wrap .adm_rev {
+	margin: 0px;
+}
+
 .view {
 	width: 1020px;
     margin: 0 auto;
@@ -4683,6 +4719,15 @@ div.review_wrap div.review_img div.upload img {
 	
 	.untilFile input[type="file"] {
 	    font-size: 12px;
+	}
+	
+	.adm_wrap {
+		padding: 5px 10px;
+	}
+
+	.adm_wrap .adm_rev {
+		font-size: 12px;
+	    line-height: 20px;
 	}
 	
 	#thumbnails .thumb {

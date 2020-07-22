@@ -1,6 +1,7 @@
 package com.tosok.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,5 +81,10 @@ public interface MemberService {
 	public int updateCartProductQty(CartVO vo);
 	public List<PayVO> selectRequestPayment(PayVO vo);
 	public int deleteReviewImg(ReviewVO vo);
+
+	public List<ReviewVO> selectReview(ReviewVO vo);
+
+	public int updateAdminReview(ReviewVO vo);
+	public int deleteAdminReview(ReviewVO vo);
 
 }

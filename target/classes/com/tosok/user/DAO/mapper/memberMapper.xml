@@ -10,8 +10,7 @@
 			SELECT			*
 			FROM			bbs_review_tb
 			WHERE			VIEW_STATE		=	'Y'
-			GROUP BY		VIEW_SEQ
-			ORDER BY		VIEW_DATE
+			ORDER BY		VIEW_DATE DESC
 
 		]]>
 	</select>
@@ -234,9 +233,9 @@
 		AND		member_Pw = HEX(AES_ENCRYPT(#{member_Pw},'raison'))
 
 	</select>
-	
-	<!-- 회원 이메일 존재 여부 -->
+
 	<select id="idCheck" parameterType="String" resultType="Integer">
+		/* [memberMapper][idCheck][회원 이메일 존재 여부] */
 
 		SELECT	COUNT(*) 
 		FROM	member_tb
@@ -244,8 +243,8 @@
 
 	</select>
 	
-	<!-- 회원 비밀번호 유효성 검사 -->
 	<select id="pwdCheck" parameterType="String" resultType="Integer">
+		/* [memberMapper][pwdCheck][회원 비밀번호 유효성 검사] */
 
 		SELECT	COUNT(*) 
 		FROM	member_tb
@@ -253,9 +252,9 @@
 		AND		member_Id = #{member_Id}
 
 	</select>
-		
-	<!-- 이메일 존재 여부 -->
+
 	<select id="find_Id" resultType="String">
+		/* [memberMapper][find_Id][이메일 존재 여부] */
 
 		SELECT	member_Id
 		FROM	member_tb
@@ -263,8 +262,8 @@
 
 	</select>
 
-	<!-- 회원정보 출력 (회원정보 수정 페이지) -->
 	<select id="info_update" resultType="com.tosok.user.VO.MemberVO">
+		/* [memberMapper][info_update][회원정보 출력 (회원정보 수정 페이지)] */
 
 		SELECT	member_Seq,
 				member_Id,
@@ -282,8 +281,9 @@
 
 	</select>
 		
-	<!-- 회원 비밀번호 수정 -->
+	<!--  -->
 	<update id="pwdUpdate" parameterType="java.util.HashMap">
+		/* [memberMapper][pwdUpdate][회원 비밀번호 수정] */
 
 		UPDATE	member_tb
 		SET		member_Pw = HEX(AES_ENCRYPT(#{member_Pw},'raison'))
@@ -291,8 +291,8 @@
 
 	</update>
 
-	<!-- 회원 프로필 업로드 -->
 	<update id="getProfileUpload" parameterType="java.util.HashMap">
+		/* [memberMapper][getProfileUpload][회원 프로필 업로드] */
 
 		UPDATE	member_tb
 		SET		member_Profile	= #{member_Profile}
@@ -300,8 +300,8 @@
 
 	</update>
 
-	<!-- 회원정보 출력 -->
 	<select id="memberInfo" resultType="com.tosok.user.VO.MemberVO">
+		/* [memberMapper][memberInfo][회원정보 출력] */
 
 		SELECT	*
 		FROM	member_tb
@@ -309,8 +309,8 @@
 
 	</select>
 
-	<!-- 회원 활동 ( 구매 Count, 구매 총 금액 ) -->
 	<select id="memberInfoCnt" resultType="com.tosok.user.VO.MemberVO">
+		/* [memberMapper][memberInfoCnt][회원 활동 ( 구매 Count, 구매 총 금액 )] */
 
 		SELECT 		COUNT(IFNULL(PAY_SEQ, 0))	AS member_Apply_Count,
 					SUM(IFNULL(TAB_PAID, 0))	AS member_Payment_Count
@@ -395,8 +395,8 @@
 
 	</update>
 
-	<!--  -->
 	<update id="insertAfterChange" parameterType="java.util.HashMap">
+		/* [memberMapper][insertAfterChange][] */
 
 		UPDATE	bbs_payment_tb
 		SET		REVIEW_EXIST 	=	1
@@ -407,8 +407,8 @@
 
 	</update>
 
-	<!-- 회원가입 -->
    	<insert id="signup" parameterType="java.util.HashMap">
+		/* [memberMapper][signup][회원가입] */
 
 		INSERT INTO member_tb 	(
 									member_Id, 
@@ -439,6 +439,7 @@
 
 	<!-- 네이버 / 카카오 회원가입 -->
    	<insert id="otherSignup" parameterType="java.util.HashMap">
+		/* [memberMapper][otherSignup][네이버 / 카카오 회원가입] */
 
 		INSERT INTO member_tb 	(
 									member_Id, 
@@ -470,8 +471,8 @@
 		</selectKey>
 	</insert>
 
-	<!-- 네이버 / 카카오 회원가입 -->
    	<insert id="insertLoginData" parameterType="java.util.HashMap">
+		/* [memberMapper][insertLoginData][네이버 / 카카오 회원가입] */
 
 		INSERT INTO bbs_login_tb 	(
 										LOGIN_ID, 
@@ -492,8 +493,8 @@
 
 	</insert>
 
-	<!-- 회원정보 수정 -->
 	<update id="userUpdate" parameterType="java.util.HashMap">
+		/* [memberMapper][userUpdate][회원정보 수정] */
 
 		UPDATE	member_tb
 		SET		member_Name 	=	#{member_Name},
@@ -505,9 +506,9 @@
 		WHERE	member_Id		=	#{member_Id}
 
 	</update>
-			
-	<!-- 회원정보 수정 -->
+
 	<update id="userUpdateAuth" parameterType="java.util.HashMap">
+		/* [memberMapper][userUpdateAuth][회원정보 수정] */
 
 		UPDATE	member_tb 
 		SET 	member_authkey	=	#{member_authkey}
@@ -515,17 +516,40 @@
 
 	</update>
 				
-	<!-- 회원정보 수정 -->
 	<update id="updateAuthstatus" parameterType="java.util.HashMap">
+		/* [memberMapper][updateAuthstatus][회원정보 수정] */
 
 		UPDATE	member_tb 
 		SET 	member_authstatus	=	#{member_authstatus}
 		WHERE	member_Id			=	#{member_Id}
 
 	</update>
-			
-	<!-- 회원 비밀번호 수정 -->
+		
+	<update id="updateAdminReview">
+		/* [memberMapper][updateAdminReview][ADMIN 고객 리뷰 수정] */
+
+		UPDATE	bbs_review_tb
+		SET		REVIEW_REPLY	=	#{REVIEW_REPLY},
+				REVIEW_REPLY_YN	=	#{REVIEW_REPLY_YN}
+		WHERE	VIEW_SEQ		=	#{VIEW_SEQ}
+
+	</update>
+
+	<update id="deleteAdminReview">
+		/* [memberMapper][deleteAdminReview][ADMIN 고객 리뷰 미노출] */
+
+		UPDATE	bbs_review_tb
+		SET		VIEW_STATE		=	#{VIEW_STATE},
+				PRODUCT_NUM		=	'',
+				PRODUCT_NAME	=	'',
+				PRODUCT_OPTION	=	'',
+				PRODUCT_QTY		=	''
+		WHERE	VIEW_SEQ		=	#{VIEW_SEQ}
+
+	</update>
+
 	<update id="update_pw" parameterType="java.util.HashMap">
+		/* [memberMapper][update_pw][회원 비밀번호 수정] */
 
 		UPDATE	member_tb
 		SET		member_Pw = HEX(AES_ENCRYPT(#{member_Pw},'raison'))
@@ -533,8 +557,8 @@
 
 	</update>
 
-	<!-- 리뷰 이미지 JSON 데이터 UPDATE -->
 	<update id="deleteReviewImg" parameterType="java.util.HashMap">
+		/* [memberMapper][deleteReviewImg][리뷰 이미지 JSON 데이터 UPDATE] */
 
 		UPDATE	bbs_review_tb
 		SET		VIEW_UPLOAD		=	#{VIEW_UPLOAD}

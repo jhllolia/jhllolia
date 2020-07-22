@@ -1324,6 +1324,21 @@ span[name="nextPage"]:after {
 	width: 100%;
 }
 
+#uldData {
+	display: inline-block;
+    width: 330px;
+    margin: 0px auto;
+}
+
+#uldData img[class='rev_img'] {
+    float: left;
+    width: 100px;
+}
+
+#uldData img[class='rev_img']:not(:last-child) {
+	margin: 0px 5px 0px 0px;
+}
+
 .paginated {
 	font-size: 16px;
     text-align: center;
@@ -1567,6 +1582,10 @@ span[name="nextPage"]:after {
 	    margin: 0px;
 	    padding: 0px 10px 0px 10px;
 	    border-radius: 0px;
+	}
+	
+	#uldData {
+		display: none;
 	}
 	
 	.adminQna {

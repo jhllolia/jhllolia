@@ -19,10 +19,6 @@ jQuery(function($) {
 				contentType: false,
 				success : function(data) {
 					review_list(data);
-				}, beforeSend: function() {
-
-				}, complete: function() {
-
 				}, error: function(error) {
 					console.log(error);
 				}
@@ -65,13 +61,13 @@ jQuery(function($) {
 					html += "		</div>";
 					
 					/*
-					
+
 					html += "		<div class='sel'>";
 					html += "			<span class='op'>" + val.PRODUCT_NAME + "</span>";
 					html += "			<span class='op'>" + val.PRODUCT_OPTION + "</span>";
 					html += "			<span class=''>" + val.PRODUCT_QTY + " 개</span>";
 					html += "		</div>";
-					
+
 					*/
 
 					html += "	</td>";
@@ -92,6 +88,16 @@ jQuery(function($) {
 
 					html += "			</div>";
 					html += "		</div>";
+
+					if(val.REVIEW_REPLY_YN == "Y") {
+						html += "<div class='review_wrap'>";
+						html += "	<div class='adm_wrap'>";
+						html += "		<p class='adm_tit'>관리자 코멘트</p>";
+						html += "		<div class='adm_rev'>" + val.REVIEW_REPLY + "</div>";
+						html += "	</div>";
+						html += "</div>";
+					}
+
 					html += "	</td>";
 					html += "</tr>";
 				});
