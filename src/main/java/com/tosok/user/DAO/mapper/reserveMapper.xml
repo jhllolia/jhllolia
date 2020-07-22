@@ -51,9 +51,11 @@
 			ON			A.PRODUCT_SEQ 			= B.PRODUCT_SEQ
 			WHERE		A.PRODUCT_STATE 		=	'Y'
 			AND			B.PRODUCT_FILE_TITLE	=	ANY	(
-															SELECT		MIN( B.PRODUCT_FILE_TITLE ) 
-															FROM		bbs_product_file_tb B 
-															GROUP BY	B.PRODUCT_SEQ
+															SELECT		PRODUCT_FILE_TITLE
+															FROM		bbs_product_file_tb 
+															WHERE		PRODUCT_FILE_STATE 	=	'Y' 
+															AND			ORD					=	0
+															GROUP BY	PRODUCT_SEQ
 														)
 			ORDER BY	A.PRODUCT_SEQ	DESC
 
@@ -72,7 +74,8 @@
 						SELECT	MIN(PRODUCT_FILE_NAME)
 						FROM	bbs_product_file_tb
 						WHERE	PRODUCT_FILE_STATE	=	'Y'
-						AND		PRODUCT_NUM			= PRODUCT_SEQ
+						AND		PRODUCT_NUM			=	PRODUCT_SEQ
+						AND		ORD					=	0
 					) AS PRODUCT_PROFILE,
 					PRODUCT_NAME,
 					PRODUCT_OPTION,

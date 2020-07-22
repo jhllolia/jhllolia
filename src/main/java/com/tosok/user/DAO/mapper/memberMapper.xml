@@ -3,8 +3,22 @@
 
 <mapper namespace="member">
 
+	<select id="selectReview" resultType="com.tosok.user.VO.ReviewVO" parameterType="java.util.HashMap">
+		/* [memberMapper][selectReview][고객 상품평 출력] */
+		<![CDATA[
+
+			SELECT			*
+			FROM			bbs_review_tb
+			WHERE			VIEW_STATE		=	'Y'
+			GROUP BY		VIEW_SEQ
+			ORDER BY		VIEW_DATE
+
+		]]>
+	</select>
+
 	<!--  -->
 	<select id="getProductReviewData" resultType="com.tosok.user.VO.ReviewVO" parameterType="java.util.HashMap">
+		/* [memberMapper][getProductReviewData][리뷰 데이터 출력] */
 		<![CDATA[
 
 			SELECT			A.*,

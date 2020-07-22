@@ -209,7 +209,8 @@
 							SELECT	MIN(PRODUCT_FILE_NAME)
 							FROM	bbs_product_file_tb
 							WHERE	PRODUCT_FILE_STATE	=	'Y'
-							AND		PRODUCT_NUM			= PRODUCT_SEQ
+							AND		PRODUCT_NUM			=	PRODUCT_SEQ
+							AND		ORD					=	0
 						) AS PRODUCT_PROFILE,
 						PRODUCT_NAME,
 						PRODUCT_OPTION,

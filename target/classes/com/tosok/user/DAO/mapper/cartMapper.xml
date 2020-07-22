@@ -3,8 +3,8 @@
 
 <mapper namespace="cart">
 
-	<!--  -->
 	<select id="selectCartMemberList" resultType="com.tosok.user.VO.CartVO" parameterType="java.util.HashMap">
+		/* [cartMapper][selectCartMemberList][장바구리 리스트] */
 		<![CDATA[
 
 			SELECT 		A.*,
@@ -19,6 +19,7 @@
 														FROM	bbs_product_file_tb B 
 														WHERE	B.PRODUCT_FILE_STATE 	=	'Y' 
 														AND		B.PRODUCT_SEQ 			=	A.CART_ORDER
+														AND		B.ORD					=	0
 													)
 			ORDER BY	A.CART_SEQ	DESC
 
