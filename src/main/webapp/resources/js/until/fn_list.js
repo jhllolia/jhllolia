@@ -3,6 +3,24 @@ jQuery.noConflict();
 jQuery(function($) {
 	$(document).ready(function() {
 
+		var swiper = new Swiper('.swiper-container', {
+
+			pagination: {
+				el: '.swiper-pagination',
+				type: 'bullets',
+				clickable : true,
+			},
+			
+			scrollbar: {
+			    el: '.swiper-scrollbar',
+			    clickable: true,
+			},
+
+			autoplay: {
+				delay: 3000,
+			},
+		});
+
 		/* =================== =================== */
 		$('li[data-view^="list_"]').find('.product').hover(function() {
 			$(this).find('div[data-img="img_prev"]').css('opacity','0');

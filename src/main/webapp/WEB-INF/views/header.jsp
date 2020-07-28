@@ -50,19 +50,22 @@
 
 <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean" rel="stylesheet">
 <link rel="stylesheet" href="/resources/css/main.css?ver=<%=System.currentTimeMillis() %>" />
+<link rel="stylesheet" href="/resources/css/swiper.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/sub.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/admin.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/menu.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" />
 
-<!-- 
+<!--
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.0.min.js"></script>
 -->
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/main.js?ver=<%=System.currentTimeMillis() %>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member.js?ver=<%=System.currentTimeMillis() %>"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jsrender.min.js?ver=<%=System.currentTimeMillis() %>"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/swiper.min.js?ver=<%=System.currentTimeMillis() %>"></script>
 
 </head>
 

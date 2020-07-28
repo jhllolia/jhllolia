@@ -8,37 +8,42 @@
 
 <div class="main">
 	<div class="m_slider">
-		<div id="TopSlider">
-			<div id="top_0">
-				<div class="top_0_txt">
-					<div class="top_title">
-						<h1>국밥의 완성 '어양토속순대'</h1>
+		<!-- 2020.07.27 -->
+		<div class="swiper-container">
+			<div id="TopSlider" class="swiper-wrapper">
+				<div id="top_0" class="swiper-slide">
+					<div class="top_0_txt">
+						<div class="top_title">
+							<h1>국밥의 완성 '어양토속순대'</h1>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="top_1">
-				<div class="top_1_txt">
-					<div class="top_title">
-						<h1>MANUFACTURING PROCESS</h1>
+				<div id="top_1" class="swiper-slide">
+					<div class="top_1_txt">
+						<div class="top_title">
+							<h1>MANUFACTURING PROCESS</h1>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="top_2">
-				<div class="top_2_txt">
-					<div class="top_title">
-						<h1>SPECIAL PROJECT</h1>
+				<div id="top_2" class="swiper-slide">
+					<div class="top_2_txt">
+						<div class="top_title">
+							<h1>SPECIAL PROJECT</h1>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="top_3">
-				<div class="top_3_txt">
-					<div class="top_title">
-						<h1>잊을 수 없는 그 맛 '어양토속순대'</h1>
+				<div id="top_3" class="swiper-slide">
+					<div class="top_3_txt">
+						<div class="top_title">
+							<h1>잊을 수 없는 그 맛 '어양토속순대'</h1>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<div id="TopSliderBtn" class="swiper-pagination"></div>
+		<!-- 
 		<div id="TopSliderBtn">
 			<ul id="ul_btns">
 				<li id="btn_0"></li>
@@ -47,8 +52,9 @@
 				<li id="btn_3"></li>
 			</ul>
 		</div>
+		-->
 	</div>
-	
+
 	<div class="sale">
 		<div class="main_tit">
 			<div class="txt">
