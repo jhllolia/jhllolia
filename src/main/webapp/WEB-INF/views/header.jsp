@@ -73,11 +73,14 @@
 	<div class="ad_container">
 		<div class="weather">
 			<ul>
+				<li onClick="location.href='../'"><p class="tit">홈으로</p></li>
+<!-- 
 				<li><p class="tit">전북 익산시 춘포면 현재기온</p></li>
 				<li><p class="pop"><span>강수 확률</span>${weather.pop} %</p></li>
 				<li><p class="temp"><span>온도</span>${weather.temp} ℃</p></li>
 				<li><p class="reh"><span>습도</span>${weather.reh} %</p></li>
 				<li><p class="wfKor"><span>날씨</span>${weather.wfKor}</p></li>
+-->
 			</ul>
 		</div>
 

@@ -303,6 +303,7 @@ img {
 }
 
 .ad_main > .ad_container > .weather > ul > li:first-child {
+	display: none;
     border-right: 0px;
 }
 
@@ -6469,20 +6470,25 @@ table.cart_list tbody tr td.cart_state .unit {
 	.ad_main > .ad_container > .weather {
 		width: 100%;
 	    height: 35px;
-	    max-width: max-content;
+/*	    max-width: max-content;	*/
 	    margin: 0px auto;
 	}
 
 	.ad_main > .ad_container > .weather > ul {
-	    display: none;
+
 	}
 
 	.ad_main > .ad_container > .weather > ul > li {
 	    border-right: 0px;
 	}
 	
+	.ad_main > .ad_container > .weather > ul > li:first-child {
+	    display: block;
+	    margin: 0px 0px 0px 10px;
+	}
+	
 	.ad_main > .ad_container > .weather > ul > li > p {
-	    font-size: 10px;
+		font-size: 13px;
 	    padding: 0px 5px 0px 5px;
 	}
 	
