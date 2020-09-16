@@ -51,8 +51,9 @@
 														(
 															SELECT	*
 															FROM	bbs_receipe_tb
-															WHERE	recipe_Title	=	#{recipe_Title}
-															AND		register_Date	=	#{register_Date}
+															WHERE	recipe_Category	=	#{recipe_Category}
+															AND		user_Id 		= 	#{user_Id}
+
 														);
 
 	</insert>
