@@ -7,9 +7,22 @@
 <jsp:include page="../header.jsp" />
 
 <div class="main">
+<!-- 
+
 	<div class="main_tit">
 		<div class="txt">
 			<h2>SALE PRODUCT</h2>
+		</div>
+	</div>
+ -->
+
+	<div class="main_tit">
+		<div class="txt">
+			<h2 class="webText">
+				판매 제품
+				<span class="webIcon">|</span>
+				<span class="webSubTxt">행복한 가격으로 만나는기회!!</span>
+			</h2>
 		</div>
 	</div>
 
@@ -39,7 +52,9 @@
 								</c:choose>
 
 								<div data-img="img_prev" file-num="${dto.PRODUCT_MIN_TIT}" style='background-image:url("../resources/upload/table/${SEQ}/${dto.PRODUCT_MIN_IMG}")'></div>
+<!-- 
 								<div data-img="img_next" file-num="${dto.PRODUCT_MAX_TIT}" style='background-image:url("../resources/upload/table/${SEQ}/${dto.PRODUCT_MAX_IMG}")'></div>
+-->
 							</div>
 	
 							<div class="unit_content">

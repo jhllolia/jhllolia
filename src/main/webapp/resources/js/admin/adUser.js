@@ -2,7 +2,7 @@ jQuery.noConflict();
 
 jQuery(function($) {
 	$(document).ready(function() {
-	
+
 		memberList();
 	
 		/* =================== 회원가입 인원 조회 ================= */

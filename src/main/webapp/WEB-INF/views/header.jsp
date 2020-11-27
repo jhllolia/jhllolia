@@ -48,7 +48,6 @@
 <meta name="msapplication-TileImage" content="/resources/1a8b107503de7f4cdc8ba8b197facd1a.ico/ms-icon-144x144.png">
 <meta name="theme-color" content="#f0ae44">
 
-<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean" rel="stylesheet">
 <link rel="stylesheet" href="/resources/css/main.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/swiper.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/sub.css?ver=<%=System.currentTimeMillis() %>" />
@@ -58,6 +57,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" />
 
 <!--
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean" rel="stylesheet">
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.0.min.js"></script>
 -->
 

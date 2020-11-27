@@ -22,6 +22,7 @@ jQuery(function($) {
 		});
 
 		/* =================== =================== */
+/*
 		$('li[data-view^="list_"]').find('.product').hover(function() {
 			$(this).find('div[data-img="img_prev"]').css('opacity','0');
 			$(this).find('div[data-img="img_next"]').css('opacity','1');
@@ -29,7 +30,7 @@ jQuery(function($) {
 			$(this).find('div[data-img="img_prev"]').css('opacity','1');
 			$(this).find('div[data-img="img_next"]').css('opacity','0');
 		});
-
+*/
 		/* =================== =================== */
 		$('li[data-view^="list_"]').find('.product').click(function() {
 			var unit = $(this).attr('data-unit');

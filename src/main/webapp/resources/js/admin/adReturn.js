@@ -48,13 +48,6 @@ jQuery(function($) {
 
 				$.each(data, function(key, val) {
 					var arr = new Array();
-					
-					/*
-					console.log(data);
-					console.log(key);
-					console.log(val[0].imp_UID);
-					*/
-
 					var paidState = val[0].paid_STATUS;
 					var returnState = val[0].buyer_RETURN_STATE;
 

@@ -1,5 +1,5 @@
 * {
- 	font-family: 'Noto Sans KR','Black Han Sans', sans-serif;
+ 	font-family: 'Noto Sans Korean', sans-serif;
 	position: relative;
 	margin: 0;
 	padding: 0;
@@ -13,76 +13,49 @@
 }
 
 @font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 100;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf)
-		format('opentype');
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Noto Sans Light'), local('NotoSans-Light'),
+    url(font/NotoSansKR-Light-Hestia.eot),
+    url(font/NotoSansKR-Light-Hestia.eot?#iefix) format('embedded-opentype'),
+    url(font/NotoSansKR-Light-Hestia.woff) format('woff'),
+    url(font/NotoSansKR-Light-Hestia.otf) format('opentype');
 }
 
 @font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 300;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf)
-		format('opentype');
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 350;
+    src: local('Noto Sans DemiLight'), local('NotoSans-DemiLight'),
+    url(font/NotoSansKR-DemiLight-Hestia.eot),
+    url(font/NotoSansKR-DemiLight-Hestia.eot?#iefix) format('embedded-opentype'),
+    url(font/NotoSansKR-DemiLight-Hestia.woff) format('woff'),
+    url(font/NotoSansKR-DemiLight-Hestia.otf) format('opentype');
 }
 
 @font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 400;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf)
-		format('opentype');
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Noto Sans Regular'), local('NotoSans-Regular'),
+    url(font/NotoSansKR-Regular-Hestia.eot),
+    url(font/NotoSansKR-Regular-Hestia.eot?#iefix) format('embedded-opentype'),
+    url(font/NotoSansKR-Regular-Hestia.woff) format('woff'),
+    url(font/NotoSansKR-Regular-Hestia.otf) format('opentype');
 }
 
 @font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 500;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf)
-		format('opentype');
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Noto Sans Medium'), local('NotoSans-Medium'),
+    url(font/NotoSansKR-Medium-Hestia.eot),
+    url(font/NotoSansKR-Medium-Hestia.eot?#iefix) format('embedded-opentype'),
+    url(font/NotoSansKR-Medium-Hestia.woff) format('woff'),
+    url(font/NotoSansKR-Medium-Hestia.otf) format('opentype');
 }
 
-@font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 700;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf)
-		format('opentype');
-}
-
-@font-face {
-	font-family: 'Noto Sans KR';
-	font-style: normal;
-	font-weight: 900;
-	src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2)
-		format('woff2'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff)
-		format('woff'),
-		url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf)
-		format('opentype');
-}
 
 html, body {
 	min-height: 100%;
@@ -92,7 +65,7 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-	font-family: 'Noto Sans KR', 'Black Han Sans';
+	font-family: 'Noto Sans Korean';
 }
 
 ul, ol, li {
@@ -290,7 +263,7 @@ img {
 }
 
 .ad_main > .ad_container > .weather > ul {
-    display: table-cell;
+	display: none;
     vertical-align: middle;
     padding: 0px 10px 0px 10px;
     margin: 0px auto;
@@ -1104,12 +1077,11 @@ img {
 }
 
 #top_0 > .top_0_txt > .top_title > h1 {
-    font-family: 'Black Han Sans', sans-serif;
     color: #fff;
-    font-size: 4vw;
+    font-size: 3vw;
     margin: 0px 0px 0px 0px;
+    padding: 15px 0px 20px 0px;
     text-align: center;
-    padding: 15px 0px 0px 0px;
 }
 
 #top_1 > .top_1_txt {
@@ -1124,22 +1096,22 @@ img {
 #top_1 > .top_1_txt > .top_title {
     background: rgba(0,0,0,0.7);
     color: #fff;
-    padding: 15px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 #top_1 > .top_1_txt > .top_title > h1 {
-    font-family: 'Black Han Sans', sans-serif;
     color: #fff;
-    text-align: center;
-    font-size: 4vw;
+    font-size: 3vw;
     margin: 0px 0px 0px 0px;
+    padding: 15px 0px 20px 0px;
+    text-align: center;
 }
 
 #top_2 > .top_2_txt {
-	position: absolute;
+    position: absolute;
     width: 100%;
     margin: 0 auto;
-    top: 47%;
+    top: 40%;
     left: 0;
     right: 0;
 }
@@ -1150,8 +1122,8 @@ img {
 }
 
 #top_2 > .top_2_txt > .top_title > h1 {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 4vw;
+	font-size: 4vw;
+    font-weight: 600;
     margin: 0px 0px 0px 0px;
 }
 
@@ -5932,17 +5904,18 @@ table.cart_list tbody tr td.cart_state .unit {
 	}
 	
 	#top_0 > .top_0_txt > .top_title > h1 {
-	    font-size: 30px;
-	    padding-bottom: 8px;
+   	 	font-size: 30px;
+    	padding: 15px 0px;
 	}
 	
 	#top_1 > .top_1_txt > .top_title > h1 {
-	    font-size: 30px;
-	    padding-bottom: 8px;
+   	 	font-size: 30px;
+    	padding: 15px 0px;
 	}
 	
 	#top_2 > .top_2_txt > .top_title > h1 {
-		font-size: 30px;
+    	font-size: 30px;
+		padding: 15px 0px;
 	}
 	
 	#top_2 > .top_2_txt > .top_title > p {
@@ -6555,35 +6528,45 @@ table.cart_list tbody tr td.cart_state .unit {
 	}
 
 	#top_0 > .top_0_txt > .top_title {
-	    padding: 8px 0px 0px 0px;
+    	padding: 10px 0px 10px 0px;
 	}
 
 	#top_0 > .top_0_txt > .top_title > h1 {
-		font-size: 25px;
-	    padding: 0px 0px 5px 0px;
+	    font-size: 20px;
+	    padding: 0px;
 	}
 	
 	#top_1 > .top_1_txt > .top_title {
-    	padding: 7px 0px 0px 0px;
+    	padding: 10px 0px;
+	}
+	
+	#top_2 > .top_2_txt {
+    	top: 40%;
 	}
 
 	#top_1 > .top_1_txt > .top_title > h1 {
-	    font-size: 18px;
-	    padding: 0px 0px 3px 0px;
+    	font-size: 20px;
+    	padding: 0px;
 	}
 	
 	#top_2 > .top_2_txt > .top_title > h1 {
-	    font-size: 18px;
-	    line-height: 20px;
+	    font-size: 20px;
+	    padding: 0px;
+	}
+	
+	#top_2 > .top_2_txt > .top_title {
+	    background: rgba(0,0,0,0.7);
+	    padding: 10px 0px;
 	}
 
 	#top_3 > .top_3_txt > .top_title {
-    	padding: 7px 0px 0px 0px;
+		padding: 10px 0px;
 	}
 
 	#top_3 > .top_3_txt > .top_title > h1 {
+	    font-family: 'Noto Sans KR';
 	    font-size: 20px;
-	    padding: 0px 0px 5px 0px;
+	    padding: 0px;
 	}
 	
 	#TopSliderBtn > #ul_btns {
@@ -7003,6 +6986,18 @@ table.cart_list tbody tr td.cart_state .unit {
 }
 
 @media (max-width: 690px) {
+	
+	#top_0 {
+	    background-image: url(../image/food/food_4_mob.jpg);
+	}
+	
+	#top_1 {
+	    background-image: url(../image/food/food_8_mob.jpg);
+	}
+	
+	#top_2 {
+	    background-image: url(../image/food/food_2_mob.jpg);
+	}
 
 	.wrap-loading > .pwdInsert {
 	    width: 100%;

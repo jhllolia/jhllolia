@@ -192,7 +192,7 @@ jQuery(function($) {
 			html += "	<h4>제품문의</h4>";
 			html += "	<hr />";
 
-			html += "	<div id='productPolicy'>";
+			html += "	<div id='productPolicy' data-seq='" + data.PRODUCT_SEQ + "' data-naming='" + data.PRODUCT_TITLE + "'>";
 			html += "		<ul>";
 			html += "			<li>상품과 관련없는 내용, 비방, 광고, 불건전한 내용의 글은 사전 동의 없이 삭제될  수 있습니다.</li>";
 			html += "			<li>문의 내역 및 답변은 상품 Q&A에서 조회 가능합니다.</li>";
@@ -277,8 +277,8 @@ jQuery(function($) {
 		    	var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; 	// 특수문자
 		    	var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 			// 한글체크
 
-			    var num = $('table#prodcutInfo').attr('data-seq');
-			    var name = $('table#prodcutInfo').attr('data-naming');
+			    var num = $('#productPolicy').attr('data-seq');
+			    var name = $('#productPolicy').attr('data-naming');
 				var type = $('input[name="sendType"]:checked').val();
 				var txt = $('input[name="sendTxt"]').val();
 				var phone_01 = $('input[id="phone_01"]').val();

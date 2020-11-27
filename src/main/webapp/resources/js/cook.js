@@ -4,11 +4,9 @@ jQuery(function($) {
 	$(document).ready(function() {
 
 		/* ======================================= */
-/*
 		window.onload = function () {
 			ckeditor();
 		}
-*/
 
 		/* ======================================= */
 		$('#latter').click( function() {
@@ -238,7 +236,6 @@ jQuery(function($) {
 		}
 
 		/* ======================================= */
-/*
 		function ckeditor() {
 			var editorConfig = {
 					filebrowserUploadUrl : "/bbs/fileUpload", 
@@ -268,7 +265,5 @@ jQuery(function($) {
 			CKEDITOR.config.youtube_controls = true;
 			CKEDITOR.config.resize_enabled = false;
 		}
-*/
-
 	});
 });

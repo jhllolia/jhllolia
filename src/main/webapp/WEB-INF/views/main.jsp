@@ -32,6 +32,7 @@
 						</div>
 					</div>
 				</div>
+<!-- 
 				<div id="top_3" class="swiper-slide">
 					<div class="top_3_txt">
 						<div class="top_title">
@@ -39,10 +40,12 @@
 						</div>
 					</div>
 				</div>
+-->
 			</div>
 		</div>
 
 		<div id="TopSliderBtn" class="swiper-pagination"></div>
+
 		<!-- 
 		<div id="TopSliderBtn">
 			<ul id="ul_btns">
@@ -58,10 +61,14 @@
 	<div class="sale">
 		<div class="main_tit">
 			<div class="txt">
-				<h2>SALE PRODUCT</h2>
+				<h2 class="webText">
+					판매 제품
+					<span class="webIcon">|</span>
+					<span class="webSubTxt">행복한 가격으로 만나는기회!!</span>
+				</h2>
 			</div>
 		</div>
-	
+
 		<div id="sale_items" class="product_container">
 			<ul>
 				<c:choose>
@@ -86,9 +93,8 @@
 											<span class="negative">품절</span>
 										</c:otherwise>
 									</c:choose>
-	
+
 									<div data-img="img_prev" file-num="${dto.PRODUCT_MIN_TIT}" style='background-image:url("../resources/upload/table/${SEQ}/${dto.PRODUCT_MIN_IMG}")'></div>
-									<div data-img="img_next" file-num="${dto.PRODUCT_MAX_TIT}" style='background-image:url("../resources/upload/table/${SEQ}/${dto.PRODUCT_MAX_IMG}")'></div>
 								</div>
 	
 								<div class="unit_content">

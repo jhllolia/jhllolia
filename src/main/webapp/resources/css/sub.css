@@ -6,34 +6,44 @@
 .main_tit {
     position: relative;
     display: table;
-    margin: 40px auto 0px auto
+    margin: 20px auto 0px auto;
 }
 
 .main_tit .txt {
-	display: table-cell;
+    display: table-cell;
     vertical-align: middle;
-    width: 600px;
-    height: 120px;
-    margin: 40px auto 0px auto;
-    text-align: center;
-    border: 4px solid #f0ae44;
-    box-sizing: border-box;
+    width: 400px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 10px 0px;
+    border-bottom: 4px solid #f0ae44;
 }
 
 .main_tit .txt h2 {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.main_tit .txt h2 span.webIcon {
     position: relative;
-    top: 5px;
-    font-family: 'Black Han Sans';
-    font-size: 60px;
-    line-height: 40px;
-    margin: 0px auto;
+    bottom: 3px;
+    font-size: 13px;
+    margin: 0px 10px;
+}
+
+.main_tit .txt h2 span.webSubTxt {
+	font-size: 17px;
+}
+
+.main_tit .txt h2.mobileText {
+	display: none;
 }
 
 .product_container {
     display: inline-block;
     width: 100%;
     height: auto;
-    margin: 40px auto 40px auto;
+    margin: 10px auto 40px auto;
     padding: 0px;
 }
 
@@ -91,17 +101,19 @@ li[data-view^="list_"] .product div[data-img^="img_"] {
     left: 0;
     width: 100%;
     height: 100%;
-    visibility: visible;
     background-color: #e8e8e8;
     background-position: center;
     background-size: 100%;
     background-repeat: no-repeat;
+/*
+    visibility: visible;
     overflow: hidden;
 	transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
+*/
 }
 
 li[data-view^="list_"] .product div[data-img^="img_"]:first-child {
@@ -109,7 +121,9 @@ li[data-view^="list_"] .product div[data-img^="img_"]:first-child {
 }
 
 li[data-view^="list_"] .product div[data-img^="img_"]:last-child {
+/*
 	opacity: 0;
+*/
 }
 
 li[data-view^="list_"] .unit_content {
@@ -289,8 +303,8 @@ li[data-view^="list_"] .unit_content .unit .proct_info span.price:after {
 }
 
 .intro_main > section > .intro_txt > .intro_txt_1 {
-    font-family: 'Black Han Sans';
-    font-size: 65px;
+	font-size: 60px;
+    font-weight: 600;
     color: #fff;
     text-align: center;
     padding-top: 9%;
@@ -387,12 +401,10 @@ li[data-view^="list_"] .unit_content .unit .proct_info span.price:after {
 }
 
 .stf_intro > .stf_txt_1 {
-    font-family: 'Black Han Sans', sans-serif;
     text-align: center;
-    font-size: 60px;
+    font-size: 35px;
     font-weight: 500;
     color: #333;
-    line-height: 50px;
     margin: 40px auto 0px auto;
 }
 
@@ -458,8 +470,7 @@ li[data-view^="list_"] .unit_content .unit .proct_info span.price:after {
 }
 
 .direction > .direction_txt {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 60px;
+    font-size: 35px;
     font-weight: 500;
     color: #333;
     line-height: 40px;
@@ -514,9 +525,9 @@ li[data-view^="list_"] .unit_content .unit .proct_info span.price:after {
 }
 
 .recipe_main > .recipe_txt_1 {
-    font-family: 'Black Han Sans';
-    font-size: 60px;
-    line-height: 25px;
+	font-size: 40px;
+    font-weight: 600;
+    line-height: 30px;
     text-align: center;
 }
 
@@ -2371,8 +2382,8 @@ div.review_wrap div.review_img div.upload img {
 }
 
 .process_main > .process_txt_1 {
-    font-family: 'Black Han Sans';
-    font-size: 85px;
+    font-size: 60px;
+    font-weight: 600;
     position: absolute;
     top: 60%;
     left: 0;
@@ -2532,9 +2543,8 @@ div.review_wrap div.review_img div.upload img {
 }
 
 .pro_main_6 > .pro_main_6_txt {
-    font-family: 'Black Han Sans';
     max-width: 1050px;
-    font-size: 48px;
+    font-size: 40px;
     margin: auto;
     text-align: center;
     padding-top: 7%;
@@ -3486,13 +3496,11 @@ div.review_wrap div.review_img div.upload img {
 	}
 	
 	.main_tit .txt {
-	    width: 300px;
-	    height: 60px;
+    	width: 370px;
 	}
 	
 	.main_tit .txt h2 {
-	    top: 2px;
-	    font-size: 25px;
+
 	}
 	
 	.product_container ul {
@@ -4540,19 +4548,30 @@ div.review_wrap div.review_img div.upload img {
 @media (max-width: 690px) {
 	
 	.main_tit {
-		margin: 15px auto;
+    	margin: 20px auto 20px auto;
 	}
 
 	.main_tit .txt {
 	    width: 250px;
 	    height: auto;
-	    margin: 20px auto;
-	}
-
-	.main_tit .txt h2 {
-	    font-size: 20px;
+	    margin: 10px auto 10px auto;
 	}
 	
+	.main_tit .txt h2.webText {
+		font-size: 18px;
+	}
+	
+	.main_tit .txt h2 span.webIcon {
+	    position: relative;
+	    bottom: 0px;
+	    font-size: 10px;
+	    margin: 0px 5px;
+	}
+	
+	.main_tit .txt h2 span.webSubTxt {
+		font-size: 12px;
+	}
+
 	.product_container {
 		margin: 0px auto;
 	}
@@ -5184,14 +5203,14 @@ div.review_wrap div.review_img div.upload img {
 	}
 
 	.intro_main > section > .intro_txt > .intro_txt_1 {
-		position: absolute;
+	    position: absolute;
 	    top: 38%;
 	    left: 0;
 	    right: 0;
-	    font-size: 20px;
-	    padding: 5px 5px 2px 5px;
-	    color: #000;
-	    background: rgba(255,255,255,0.8);
+	    font-size: 18px;
+	    padding: 10px 0px;
+	    color: #fff;
+	    background: rgba(0,0,0,0.8);
 	    margin: auto;
 	}
 
@@ -5213,8 +5232,8 @@ div.review_wrap div.review_img div.upload img {
 	    top: 60%;
 	    left: 0;
 	    right: 0;
-	    font-size: 20px;
-	    padding: 4px 0px 2px 0px;
+	    font-size: 18px;
+	    padding: 5px 0px 8px 0px;
 	    color: #fff;
 	    background: rgba(0,0,0,0.8);
 	}
@@ -5319,8 +5338,8 @@ div.review_wrap div.review_img div.upload img {
 	}
 		
 	.pro_main_6 > .pro_main_6_txt {
-	    max-width: 90%;
-	    font-size: 16px;
+    	max-width: 90%;
+   		font-size: 15px;
 	}
 	
 	.direction > .direction_txt_2 {

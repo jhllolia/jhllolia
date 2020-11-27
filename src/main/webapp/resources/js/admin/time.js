@@ -26,30 +26,9 @@ jQuery(function($) {
 				}
 			});
 		}
-
-		/* ================== 위치정보 ======================= */
-		function getLocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-					console.log(position);
-				}, function(error) {
-					console.error(error);
-				}, {
-					enableHighAccuracy: false,	// 배터리를 더 소모해서 더 정확한 위치를 찾음
-					maximumAge: 0,				// 한 번 찾은 위치 정보를 해당 초만큼 캐싱
-					timeout: Infinity			// 주어진 초 안에 찾지 못하면 에러 발생
-				});
-			} else {
-				alert('GPS를 지원하지 않습니다');
-			}
-		}
-
-		getLocation();
 	
 		/* ================== Link IP ======================= */
 		function visitIp() {
-/*
-			2020.07.20
 			$('span#visitIp').click(function(evt) {
 				$('span#visitIp').removeClass('selected');
 	
@@ -68,7 +47,6 @@ jQuery(function($) {
 					}
 		    	});
 			});
-*/
 		}
 	
 		/* ================== IP Status ======================= */

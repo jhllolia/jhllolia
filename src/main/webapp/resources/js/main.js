@@ -4,13 +4,13 @@ jQuery(function($) {
 	$(document).ready(function() {
 
 		/* ============================================== */
-		/*
+/*
 	    if (document.location.protocol == 'http:') {
 	        document.location.href = document.location.href.replace('http:', 'https:');
 		}
-		*/
-
+*/
 		/* ============================================== */
+/*
 		WebFontConfig = {
 							custom: {
 								families: ['Black Han Sans'],
@@ -27,7 +27,7 @@ jQuery(function($) {
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(wf, s);
 		})();
-	
+*/
 		/* ======================== Member Menu Hover ======================= */
 		$('.member_menu').hover(function() {
 			$(this).find('i.menu_icon').find('img').attr('src', $(this).find('i.menu_icon').find('img').attr('src').replace("_off","_on"));
