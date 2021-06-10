@@ -15,7 +15,7 @@
 			<img src="/resources/image/icon/footer_logo.png" alt="어양토속순대" />
 		</a>
 
-		<div class="foot_txt">
+		<div class="foot_txt"> 
 	 		<p class="txt">
 	 			<span class="comm">상호명 : 어양토속식품</span>
 	 			<span class="comm">전북 익산시 춘포면 화신길 49 <span class="father">대표 전병준</span></span>
