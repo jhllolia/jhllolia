@@ -303,11 +303,11 @@ li[data-view^="list_"] .unit_content .unit .proct_info span.price:after {
 }
 
 .intro_main > section > .intro_txt > .intro_txt_1 {
-	font-size: 60px;
+    font-size: 60px;
     font-weight: 600;
     color: #fff;
     text-align: center;
-    padding-top: 9%;
+    padding-top: 8%;
 }
 
 .intro_main > .intro_txt_2 {
@@ -1460,7 +1460,6 @@ table[id="option"] tbody tr.totalAll td.all #re span#txtResult {
 
 .payDone ul[name^="info_"] li div.goods_item a.goods_link img {
 	width: 90px;
-	height: 90px;
 }
 
 .payDone ul[name^="info_"] li div.goods_item div.goods_name {
@@ -3248,7 +3247,125 @@ div.review_wrap div.review_img div.upload img {
     border-radius: 0px;
 }
 
+.gallary {
+    display: inline-block;
+    width: 1050px;
+    margin: 0px auto;
+}
 
+.gallary ul.list {
+	margin: 0px;
+}
+
+.gallary ul.list li {
+    float: left;
+    display: table;
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.gallary ul.list li .mobArea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #e8e8e8;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.gallary ul.list li .txt {
+    display: none;
+    vertical-align: middle;
+    font-size: 20px;
+    z-index: 9999;
+    color: #ffff;
+}
+
+.gallary ul.list li.on {
+	background-color: #000;
+}
+
+.gallary ul.list li.on .mobArea {
+	opacity: 0.6;
+	filter: alpha(opacity=60);
+}
+
+.gallary ul.list li.on .txt {
+    display: table-cell;
+}
+
+.gallary .addMore {
+    display: inline-block;
+    width: 100%;
+    border-top: 1px solid #f2f2f2;
+    padding: 20px 0px 0px 0px;
+    margin: 20px 0px 0px 0px;
+}
+
+.gallary .addMore button {
+    width: 300px;
+    font-size: 17px;
+    color: #575050;
+    padding: 7px;
+}
+
+.gallaryDetail {
+	display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');
+    z-index: 9999;
+}
+
+.gallaryDetail .popContents {
+    display: table;
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
+}
+
+.gallaryDetail .popContents .detailWrap {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.gallaryDetail .popContents .detailWrap img {
+	max-width: 100%;
+    height: auto;
+}
+
+.gallaryDetail .popContents .detailWrap span.btn-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dadada;
+    border: 2px solid #303030;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.gallaryDetail .popContents .detailWrap span.hashTxt {
+    position: absolute;
+    padding: 15px 30px;
+    color: #fff;
+    font-size: 25px;
+    z-index: 999;
+}
+
+.gallaryDetail .popContents .detailWrap span.btn-close img {
+    width: 40px;
+}
 
 @media (max-width: 1500px) {
 
@@ -3780,7 +3897,49 @@ div.review_wrap div.review_img div.upload img {
 		margin-bottom: 0px;
 		text-align: center;
 	}
+	
+	.gallary {
+		width: 100%;
+	}
+
+	.gallary ul.list {
 		
+	}
+	
+	.gallary ul.list li {
+		width: 33.333%;
+    	height: 0;
+    	margin: 0px;
+	    padding: 0px 0px 30% 0px;
+	}
+
+	.gallary ul.list li .mobArea {
+		background-size: 200%;
+	    border: 1px solid #fff;
+	}
+	
+	.gallary ul.list li.on .txt {
+	    position: absolute;
+	    font-size: 12px;
+	}
+	
+	.gallaryDetail .popContents .detailWrap span.btn-close {
+    	padding: 8px;
+	}
+	
+	.gallaryDetail .popContents .detailWrap span.btn-close img {
+	    width: 25px;
+	}
+	
+	.gallaryDetail .popContents .detailWrap span.hashTxt { 
+   		padding: 10px 15px;
+    	font-size: 17px;
+	}
+
+	.gallaryDetail .popContents .detailWrap img {
+
+	}
+
 	.stf_intro {
     	margin: 20px 0px 0px 0px;
 	}
@@ -5366,6 +5525,21 @@ div.review_wrap div.review_img div.upload img {
 	    overflow: hidden;
 	    white-space: nowrap;
 	}
+	
+	.gallary .addMore {
+		padding: 10px 0px 0px 0px;
+	    margin: 10px 0px 0px 0px;
+	}
+	
+	.gallary .addMore button {
+		width: 95%;
+	    font-size: 13px;
+	    font-weight: 600;
+	    border-radius: 0px;
+	    border: 1px solid #dadada;
+	    background-color: #f2f2f2;
+	    color: #303030;
+	}
 
 	.member_wrapper {
 	    display: inline-block;
@@ -5754,7 +5928,6 @@ div.review_wrap div.review_img div.upload img {
 	
 	.payDone ul[name^="info_"] li div.goods_item a.goods_link img {
 	    width: 75px;
-	    height: 75px;
 	}
 	
 	.payDone ul[name^="info_"] li div.goods_item div.goods_name h4 {

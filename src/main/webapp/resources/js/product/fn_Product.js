@@ -66,84 +66,94 @@ jQuery(function($) {
 				$('.cartAdd').css('display','none');							// 장바구니 팝업 초기화
 				$('.p_total > dt.wrap').css('display','none');					// 
 
-				var html = "";
-				var option = "";
+				var idx = $("#addProduct option").index($("#addProduct option:selected"));	// 선택된 값
 
-				var id = $(this).val();											// 
-				var name = $(this).find('option:selected').text();				// 
-				var state = $(this).find('option:selected').attr('data-state');	// 
-				var seq = $(this).find('option:selected').attr('seq');			// 
-				var price = $(this).find('option:selected').attr('price');		// 
-				var sale = $(this).find('option:selected').attr('sale');		// 
+				// selectBox 첫번째 클릭시 전체 삭제
+				if(idx == 0) {
+					$('.p_result ul').find('li').remove();
+				} else {
 
-				html += "<li name='check_" + seq + "' class='" + id + "'>";
-				html += "	<div class='option'>";
-				html += "		<div class='option_result'>";
-				html += "			<span id='o_chk'>" + name + "</span>";
-				html += "		</div>";
-				html += "		<div class='quantity buttons_added'>";
-				html += "			<span class='subtract-item'>-</span>";
-				html += "			<span class='item-count'>";
-				html += "				<input type='text' id='qty' class='qty' name='itemcount[]' value='1' readonly />";
-				html += "			</span>";
-				html += "			<span class='add-item'>+</span>";
-				html += "		</div>";
-				html += "		<div class='option_chk'>";
-				html += "			<span id='price_result'>" + number_format(price) + " 원</span>";		// sale price
-				html += "			<span class='option-delete'><img src='../resources/image/main/close.png' alt='rest' /></span>";
-				html += "		</div>";
-				html += "	</div>";
-				html += "</li>";
+					var html = "";
+					var option = "";
+					
+					var id = $(this).val();											// 
+					var name = $(this).find('option:selected').text();				// 
+					var state = $(this).find('option:selected').attr('data-state');	// 
+					var seq = $(this).find('option:selected').attr('seq');			// 
+					var price = $(this).find('option:selected').attr('price');		// 
+					var sale = $(this).find('option:selected').attr('sale');		// 
+					
+					html += "<li name='check_" + seq + "' class='" + id + "'>";
+					html += "	<div class='option'>";
+					html += "		<div class='option_result'>";
+					html += "			<span id='o_chk'>" + name + "</span>";
+					html += "		</div>";
+					html += "		<div class='quantity buttons_added'>";
+					html += "			<span class='subtract-item'>-</span>";
+					html += "			<span class='item-count'>";
+					html += "				<input type='text' id='qty' class='qty' name='itemcount[]' value='1' readonly />";
+					html += "			</span>";
+					html += "			<span class='add-item'>+</span>";
+					html += "		</div>";
+					html += "		<div class='option_chk'>";
+					html += "			<span id='price_result'>" + number_format(price) + " 원</span>";		// sale price
+					html += "			<span class='option-delete'><img src='../resources/image/main/close.png' alt='rest' /></span>";
+					html += "		</div>";
+					html += "	</div>";
+					html += "</li>";
+					
+					var alreadyCheck = true;
+					
+					/* ================== already selected option =============== */
+					for(var k = 0; k < $('.p_result > ul').find('li').length; k++) {
+						var already = $('.p_result > ul').find('li:eq(' + k + ')').find('#o_chk').text().trim();
 
-				/* ================== already selected option =============== */
-				for(var k = 0; k < $('.p_result > ul').find('li').length; k++) {
-					var already = $('.p_result > ul').find('li:eq(' + k + ')').find('#o_chk').text().trim();
-
-					if(already == name) {
-						alert('이미 선택된 옵션입니다.');
-						$('#addProduct option:eq(0)').attr('selected', 'selected');
-						return false;
+						if(already == name) {
+							alert('이미 선택된 옵션입니다.');
+							$(this).find('option:first').attr('selected', 'selected');
+							return;
+						}
 					}
-				}
-
-				/*
-				
-				var temp 	= new Array();
-				var obj 	= $('select[name="addProduct"]');
-				var result 	= false;
-
-				$(obj).each(function(i) {
-					temp[i] = $(this).val();
-				});
-
-				$(temp).each(function(i) {
-					var x = 0;
-
+					
+					/*
+					
+					var temp 	= new Array();
+					var obj 	= $('select[name="addProduct"]');
+					var result 	= false;
+	
 					$(obj).each(function(i) {
-						if(temp[i] == $(this).val()) {
-							x++;
+						temp[i] = $(this).val();
+					});
+	
+					$(temp).each(function(i) {
+						var x = 0;
+	
+						$(obj).each(function(i) {
+							if(temp[i] == $(this).val()) {
+								x++;
+							}
+						});
+	
+						if(x > 1) {
+							alert('이미 선택된 옵션입니다.');
+							result = true;
+							return false;
 						}
 					});
 
-					if(x > 1) {
-						alert('이미 선택된 옵션입니다.');
-						result = true;
+					 */
+
+					/* ================== add li =============== */
+					if(state != "N") {
+						$('.p_result > ul').append(html); 			// li add
+						$('.p_total dt').css('display','block'); 	// total price add
+
+						calculatePrice();
+					} else {
+						alert('품절된 제품입니다.');
 						return false;
 					}
-				});
-
-				*/
-
-				/* ================== add li =============== */
-				if(state != "N") {
-					$('.p_result > ul').append(html); 			// li add
-					$('.p_total dt').css('display','block'); 	// total price add
-				} else {
-					alert('품절된 제품입니다.');
-					return false;
 				}
-
-				calculatePrice();
 			});
 
 			/* ================== + =============== */

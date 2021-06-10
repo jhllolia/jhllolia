@@ -14,14 +14,18 @@
 				<div id="top_0" class="swiper-slide">
 					<div class="top_0_txt">
 						<div class="top_title">
-							<h1>국밥의 완성 '어양토속순대'</h1>
+							<h1>순수하게 맛으로만 승부하는</h1>
+							<p class="top_0_sub">국밥의 완성 '어양토속순대'</p>
+							<a class="mainLink_btn" href="./intro">자세히 보기</a>
 						</div>
 					</div>
 				</div>
 				<div id="top_1" class="swiper-slide">
 					<div class="top_1_txt">
 						<div class="top_title">
-							<h1>MANUFACTURING PROCESS</h1>
+							<h1>맛에서까지 느껴지는 깔끔함</h1>
+							<p class="top_1_sub">어양토속순대의 제조과정</p>
+							<a class="mainLink_btn" href="./process">자세히 보기</a>
 						</div>
 					</div>
 				</div>
@@ -29,6 +33,7 @@
 					<div class="top_2_txt">
 						<div class="top_title">
 							<h1>SPECIAL PROJECT</h1>
+							<a class="mainLink_btn" href="./bbs/recipe">자세히 보기</a>
 						</div>
 					</div>
 				</div>

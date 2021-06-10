@@ -3,8 +3,11 @@ package com.tosok.user.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.tosok.user.Until.Criteria;
 import com.tosok.user.VO.CommentVO;
+import com.tosok.user.VO.ImageVO;
 import com.tosok.user.VO.ReceipeVO;
 
 public interface ReceipeService {
@@ -28,5 +31,9 @@ public interface ReceipeService {
 
 	public List<CommentVO> selectDelComment(Map<String, Object> paramMap);
 	public void deleteChildComment(int child);
+
+	public int updateGallaryData(ImageVO vo);
+	public List<ImageVO> selectGallayTotalImage(ImageVO vo);
+	public void listGallaryOrdChange(HttpServletRequest req);
 
 }

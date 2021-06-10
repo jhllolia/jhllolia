@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="s" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:include page="header.jsp" />
 
@@ -38,10 +42,38 @@
 		<div class="stf_intro">
 			<p class="stf_txt_1">거짓없이 맛으로 승부하는 "<span>어양토속순대</span>"</p>
 			<hr />
+
+			<div class="gallary">
+				<ul class="list">
+					<c:choose>
+						<c:when test="${fn:length(list) == 0}">
+
+						</c:when>
+						<c:otherwise>
+
+							<c:forEach items="${list}" var="dto" varStatus="status">
+								<li name="showGallary" data-title="${dto.title}" data-idx="${dto.img_idx}" data-web="${dto.web_image}">
+									<div class="mobArea" style='background-image:url("../resources/upload/gallary/${dto.mob_image}")'></div>
+									<span class="txt">${dto.title}</span>
+								</li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+
+				<div class="addMore">
+					<button id="addGallaryData" class="btn">더 보기</button>
+				</div>
+
+				<div id="gallaryDetail" class="gallaryDetail"></div>
+			</div>
+
+<!-- 
 			<p class="pro_main" />
 			<p class="food_main_1" />
 			<p class="pro_main_1" />
 			<p class="food_main_2" />
+-->
 		</div>
 	</div>
 
@@ -51,7 +83,7 @@
 		<p class="direction_txt_2">전북 익산시 춘포면 화신길 49</p>
 
 		<div id="map" style="width:100%;height:450px;"></div>
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8e17e941ff8ec2fc7c002f7273b50ae2&libraries=services,clusterer,drawing"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c302e22b0d93d89b5c0144391757e420&libraries=services,clusterer,drawing"></script>
 		<script type="text/javascript">
 			jQuery.noConflict();
 
@@ -100,8 +132,125 @@
 					});
 				});
 			});
+
+			/* ===== 팝업 종료 ====== */
+			function closePopup() {
+				var container = document.getElementById("gallaryDetail");
+				var detail = document.getElementById("popContents");
+
+				detail.parentNode.removeChild(detail);
+				container.style.display = 'none';
+			}
 		</script>
 	</div>
+
+	<script>
+	jQuery.noConflict();
+
+	jQuery(function($) {
+		$(document).ready(function() {
+
+			actionListData();
+
+			/* =========== 갤러리 Close =============== */
+			$('#addGallaryData').click(function() {
+				var formData = new FormData();
+				var arr = new Array();
+				var cnt = $('[name="showGallary"]').length;
+				
+				$('[name="showGallary"]').each(function(index, item) {
+					arr[index] = $('[name="showGallary"]').eq(index).attr('data-idx')
+				});
+
+				formData.append("arr", arr);
+
+				$.ajax({
+		    		url	: '/intro/addData',
+					type : 'POST',
+					data : formData,
+					processData: false,
+					contentType: false,
+					success : function(data) {
+						var template = $.templates("#addTempList");
+						var htmlOutput = template.render(data);
+
+						$('.gallary ul').append(htmlOutput);
+						actionListData();
+
+						/* ======== 3개 이하 더보기 삭제 ======== */
+						if(data.length < 3) {
+							$('#addGallaryData').hide();
+						}
+
+						scrollCommon(cnt);
+					}, beforeSend: function() {
+
+					}, complete: function() {
+
+					}, error: function(error) {
+						console.log(error);
+					}
+				});
+			});
+
+			/* =========== 영역 이동 ============ */
+			function scrollCommon(cnt) {
+				var obj = $('[name="showGallary"]').eq(cnt - 3).offset();
+
+				$('html, body').animate({
+					scrollTop : obj.top
+				}, 400);
+			}
+
+			function actionListData() {
+				/* =========== 갤러리 Hover =============== */
+				$('[name="showGallary"]').hover(function() {
+					$(this).addClass('on');
+				},function() {
+					$(this).removeClass('on');
+				});
+
+				/* =========== 갤러리 Click =============== */
+				$('[name="showGallary"]').click(function() {
+					var obj = new Object();
+					obj.idx = $(this).attr('data-idx');
+					obj.webImg = $(this).attr('data-web');
+					obj.title = $(this).attr('data-title');
+
+					var template = $.templates("#templeView");
+					var htmlOutput = template.render(obj);
+
+					$('.gallaryDetail').html(htmlOutput);
+					$('.gallaryDetail').show();
+				});
+				
+				$('.gallaryDetail').click(function(e) {
+					if($(e.target).hasClass("detailWrap")) {
+						$('.popContents').remove();
+						$('.gallaryDetail').css('display','none');
+					}
+				});
+			}
+		});
+	});
+	</script>
+
+	<script id="addTempList" type="text/x-jsrender">
+		<li name="showGallary" data-title="{{:title}}" data-idx="{{:img_idx}}" data-web="{{:web_image}}">
+			<div class="mobArea" style='background-image:url("../resources/upload/gallary/{{:mob_image}}")'></div>
+			<span class="txt">{{:title}}</span>
+		</li>
+	</script>
+
+	<script id="templeView" type="text/x-jsrender">
+		<div class="popContents" id="popContents">
+			<div class="detailWrap">
+				<span class="btn-close" onclick="javascript:closePopup()"><img src="../resources/image/icon/close_icon.png" alt=""></span>
+				<span class="hashTxt">{{:title}}</span>
+				<img src="../resources/upload/gallary/{{:webImg}}" alt="" />
+			</div>
+		</div>
+	</script>
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/until/fn_slide.js"></script>
 </div>

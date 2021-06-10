@@ -2,6 +2,105 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tosok.user.DAO.ReceipeDAO">
+
+	<update id="updateGallaryData" parameterType="java.util.HashMap">
+		/* [receipeMapper][updateGallaryData][갤러리 정보변경] */
+
+		UPDATE	bbs_gallary_tb 
+		SET		REG_DT = NOW()
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(ord)">
+			, TITLE = #{title}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(ord)">
+			, ORD =	#{ord}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(web_image)">
+			, WEB_IMAGE = #{web_image}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(mob_image)">
+			, MOB_IMAGE = #{mob_image}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(del_yn)">
+			, DEL_YN = #{del_yn}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(title)">
+			, TITLE = #{title}		
+		</if>
+
+		WHERE	IMG_IDX		=	#{img_idx}
+	</update>
+
+	<insert id="insertGallaryData" parameterType="java.util.HashMap">
+		/* [receipeMapper][insertGallaryData][갤러리 순서변경] */
+
+		INSERT INTO bbs_gallary_tb	( 
+										TITLE
+										, WEB_IMAGE
+										, MOB_IMAGE
+										, ORD
+										, REG_DT
+									) 
+					VALUES		 	( 
+										#{title}
+										, #{web_image}
+										, #{mob_image}
+										, #{ord}
+										, NOW()
+									)	
+	</insert>
+	
+	<select id="selectGallaryCnt" resultType="int">
+		/* [receipeMapper][selectGallaryCnt][갤러리 카운트] */
+		SELECT		
+			COUNT(*)
+		FROM
+			bbs_gallary_tb	
+		WHERE
+			1=1
+			AND USE_YN 	= 'N'
+			AND DEL_YN	= 'N'
+	</select>
+
+	<select id="selectGallayTotalImage" resultType="com.tosok.user.VO.ImageVO" parameterType="java.util.HashMap">
+		/* [receipeMapper][selectGallayTotalImage][갤러리 리스트] */
+
+		SELECT		*
+		FROM		bbs_gallary_tb	
+		WHERE		USE_YN 	= 'N'
+		AND			DEL_YN	= 'N'
+		<choose>
+			<when test='addData == "3"'>
+				AND			IMG_IDX NOT IN 
+				<foreach collection="img_idxs" item="item" index="index" separator="," open="(" close=")">
+					${item}
+				</foreach>
+				ORDER BY	CAST(ORD AS INT) ASC
+				LIMIT 		3
+			</when>
+			<when test='addData == "6"'>
+				ORDER BY	CAST(ORD AS INT) ASC
+				LIMIT		6
+			</when>
+			<otherwise>
+				ORDER BY	CAST(ORD AS INT) ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectAddGallaryData" resultType="com.tosok.user.VO.ImageVO" parameterType="java.util.HashMap">
+		/* [receipeMapper][selectAddGallaryData][갤러리 추가 리스트] */
+	
+		SELECT		*
+		FROM		bbs_gallary_tb	
+		WHERE		USE_YN 	= 'N'
+		AND			DEL_YN	= 'N'
+		AND			IMG_IDX NOT IN 
+		<foreach collection="img_idxs" item="item" index="index" separator="," open="(" close=")">
+			${item}
+		</foreach>
+		ORDER BY	ORD ASC
+	</select>
+
 	<select id="listReceipeDao" resultType="com.tosok.user.VO.ReceipeVO" parameterType="java.util.HashMap">
 	
 		SELECT		DISTINCT *

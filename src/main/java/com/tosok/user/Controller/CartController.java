@@ -100,6 +100,7 @@ public class CartController {
 	@ResponseBody
 	public int count_cart(HttpServletRequest request, CartVO vo) {
 		String id = (String) request.getSession().getAttribute("member_Id");
+		System.out.println("id ===> " + id);
 
 		if("null".equals(id)) {
 			return 0;

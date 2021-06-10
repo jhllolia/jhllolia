@@ -32,6 +32,7 @@
 							<li><a href="../qna" class="cliEvent">상품QnA</a></li>
 							<li><a href="../return" class="cliEvent">반품/교환</a></li>
 							<li><a href="../review" class="cliEvent">고객 상품평</a></li>
+							<li><a href="../gallary" class="cliEvent">갤러리</a></li>
 							<li><a href="../product/table" class="cliEvent">상품 리스트</a></li>
 							<li><a href="../memberList" class="cliEvent">회원 리스트</a></li>
 							<li><a href="../come" class="cliEvent">방문자 리스트</a></li>

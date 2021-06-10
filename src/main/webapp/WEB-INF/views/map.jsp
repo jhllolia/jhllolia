@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8e17e941ff8ec2fc7c002f7273b50ae2&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c302e22b0d93d89b5c0144391757e420&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/busInfo.js" ></script>
 
 <jsp:include page="./footer.jsp" />

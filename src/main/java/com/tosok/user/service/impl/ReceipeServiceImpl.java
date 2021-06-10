@@ -1,16 +1,28 @@
 package com.tosok.user.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tosok.user.DAO.ReceipeDAO;
 import com.tosok.user.Until.Criteria;
+import com.tosok.user.Upload.SeatFileInsert;
 import com.tosok.user.VO.CommentVO;
+import com.tosok.user.VO.ImageVO;
 import com.tosok.user.VO.ReceipeVO;
 import com.tosok.user.service.ReceipeService;
 
@@ -19,7 +31,57 @@ public class ReceipeServiceImpl implements ReceipeService {
 
     @Resource(name="ReceipeDAO")
     private ReceipeDAO receipeDao;
+    
+    @Autowired
+    private SeatFileInsert seatFileInsert;
 
+	@Override
+	public int updateGallaryData(ImageVO vo) {
+		int result = 0;
+		
+		if("Y".equals(vo.getDel_yn())) {
+			
+			ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+			HttpServletRequest request = sra.getRequest();
+			HttpSession session = request.getSession();
+
+			String rootPath = session.getServletContext().getRealPath("/resources/upload/gallary/");
+			
+			File webFile = new File(rootPath + vo.getWeb_image());
+			File mobFile = new File(rootPath + vo.getMob_image());
+
+			webFile.delete();	// 이미지 삭제
+			mobFile.delete();	// 이미지 삭제
+			
+			// 이미지 삭제
+			result = receipeDao.deleteGallaryData(vo);
+		} else {
+			
+			MultipartFile file = vo.getFiles();
+			
+			String web = seatFileInsert.insertFileProc(vo.getPcWidth(), vo.getPcHight(), file);
+			String mob = seatFileInsert.insertFileProc(vo.getMobWidth(), vo.getMobHight(), file);
+
+			if(!"".equals(web) && !"".equals(mob)) {
+				vo.setWeb_image(web);
+				vo.setMob_image(mob);
+			}
+			
+			if(!"".equals(vo.getImg_idx())) {
+				result = 1;
+				receipeDao.updateGallaryData(vo);
+			} else {
+
+				int ordCnt = receipeDao.selectGallaryCnt(vo);
+				vo.setOrd(Integer.toString(ordCnt));
+
+				result = receipeDao.insertGallaryData(vo);
+			}
+		}
+
+		return result;
+	}
+    
 	@Override
 	public List<ReceipeVO> listReceipeDao(Criteria cri) {
 		return receipeDao.listReceipeDao(cri);
@@ -123,5 +185,27 @@ public class ReceipeServiceImpl implements ReceipeService {
 		receipeDao.deleteChildComment(child);
 	}
 
+	@Override
+	public List<ImageVO> selectGallayTotalImage(ImageVO vo) {
+		return receipeDao.selectGallayTotalImage(vo);
+	}
+
+	@Override
+	public void listGallaryOrdChange(HttpServletRequest req) {
+		JsonParser parser = new JsonParser();
+		String str = req.getParameter("arr");
+    	JsonArray arr = (JsonArray) parser.parse(str);
+    	
+    	for (int i = 0; i < arr.size(); i++) {
+			ImageVO vo = new ImageVO();
+    		JsonObject data = (JsonObject) arr.get(i);
+
+    		vo.setImg_idx(data.get("idx").getAsString());
+    		vo.setTitle(data.get("title").getAsString());
+    		vo.setOrd(data.get("ord").getAsString());
+
+    		receipeDao.updateGallaryData(vo);
+    	}
+	}
 
 }

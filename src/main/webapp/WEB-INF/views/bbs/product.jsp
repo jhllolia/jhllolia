@@ -7,15 +7,6 @@
 <jsp:include page="../header.jsp" />
 
 <div class="main">
-<!-- 
-
-	<div class="main_tit">
-		<div class="txt">
-			<h2>SALE PRODUCT</h2>
-		</div>
-	</div>
- -->
-
 	<div class="main_tit">
 		<div class="txt">
 			<h2 class="webText">

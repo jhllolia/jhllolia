@@ -26,10 +26,12 @@ public class VisitCounter implements HttpSessionListener {
 
         	VisitCountDAO dao = (VisitCountDAO) wac.getBean("visitCountDAO");
         	VisitCountVO vo = new VisitCountVO();
-        	String ip = req.getHeader("X-Forwarded-For");
+        	String ip = "";
 
         	if(ip == null) {
         		ip = req.getRemoteAddr();
+        	} else {
+        		ip = req.getHeader("X-Forwarded-For");
         	}
 
             vo.setVisit_ip(ip);

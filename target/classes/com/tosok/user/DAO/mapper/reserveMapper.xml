@@ -358,7 +358,7 @@
 		WHERE	FILE_SEQ			=	#{FILE_SEQ}
 	
 	</update>
-	
+
 	<delete id="deleteFileOrd" parameterType="java.util.HashMap">
 
 		UPDATE	bbs_product_file_tb 

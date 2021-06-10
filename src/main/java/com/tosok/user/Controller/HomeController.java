@@ -47,6 +47,7 @@ import com.tosok.user.Until.ProductSellList;
 import com.tosok.user.Until.SearchCriteria;
 import com.tosok.user.Until.SendSms;
 import com.tosok.user.VO.FileUploadVO;
+import com.tosok.user.VO.ImageVO;
 import com.tosok.user.VO.MapVO;
 import com.tosok.user.VO.MemberVO;
 import com.tosok.user.VO.PayVO;
@@ -94,8 +95,13 @@ public class HomeController {
 
     /* ========== 회사소개 ========== */
 	@RequestMapping("/intro")
-	public String intro() {
-		return "/intro";
+	public ModelAndView intro(ImageVO vo) {
+		ModelAndView mav = new ModelAndView();
+		vo.setAddData("6");
+
+		mav.addObject("list", ReceipeService.selectGallayTotalImage(vo));
+		mav.setViewName("/intro");
+		return mav;
 	}
 
     /* ========== 제조과정 ========== */
@@ -113,6 +119,45 @@ public class HomeController {
 		mav.setViewName("/main");
 		return mav;
 	}
+
+	/* ========== 갤러리 ADMIN ========== */
+	@Secured("ROLE_ADMIN")
+	@RequestMapping("/gallary")
+	public ModelAndView gallary(ImageVO vo) {
+		ModelAndView mav = new ModelAndView();
+
+		mav.addObject("list", ReceipeService.selectGallayTotalImage(vo));
+		mav.setViewName("security/gallary");
+		return mav;	
+	}
+
+	@RequestMapping("/gallary/proc")
+	public String sendGallary(ImageVO vo) {
+
+		int result = ReceipeService.updateGallaryData(vo);
+		
+		if(result > 0) {
+			return "redirect:/gallary";
+		} else {
+			return "";
+		}
+	}
+
+	@RequestMapping("/gallary/ordProc")
+	@ResponseBody
+	public void gallaryOrd(HttpServletRequest req) {
+		ReceipeService.listGallaryOrdChange(req);
+	}
+	
+	@RequestMapping(value="/intro/addData", method=RequestMethod.POST)
+	@ResponseBody
+	public List<ImageVO> addGallaryData(HttpServletRequest req, ImageVO vo) {
+		vo.setImg_idxs(req.getParameterValues("arr"));
+		vo.setAddData("3");
+
+		return ReceipeService.selectGallayTotalImage(vo);
+	}
+	
 	
 	/* ========== 방문자 통계 ========== */
 	@Secured("ROLE_ADMIN")

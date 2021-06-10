@@ -4,21 +4,178 @@ jQuery(function($) {
 	$(document).ready(function() {
 		$(".alert").hide();
 
-		userProfile();
-
 		var idck = "";
     	var regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; // email check
 
     	/* ====================== 사용자 프로필 ======================= */
-    	function userProfile() {
-    		$('#u_profile').change( function(e) {
-    			$("input[name='f_profile']").click();
-    		});
+		$('#u_profile').change( function(e) {
+			$("input[name='f_profile']").click();
+		});
 
-    		$("input[name='f_profile']").change(function(e) {
-    			fileUpload(this);
-    		});
-    	}
+		$("input[name='f_profile']").change(function(e) {
+			fileUpload(this);
+		});
+
+		/* ==================  Sign Up  ================== */
+        $('#btn_signup').click( function() {
+        	$('.alert').hide();
+
+    		var pattern_num = /[0-9]/;					// 숫자
+        	var pattern_eng = /[a-zA-Z]/;				// 문자 
+        	var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+        	var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 		// 한글체크
+
+        	var member_Id = $("#member_Id").val();
+        	var member_Pw = $("#member_Pw").val();
+        	var member_Pw_chk = $("#member_Pw_chk").val();
+        	var member_Name = $("#member_Name").val();
+        	var member_Phone = "";
+
+        	var member_Zip = $("#zip").val();
+        	var member_Addr1 = $("#addr1").val();
+        	var member_Addr2 = $("#addr2").val();
+
+        	var m_first = $('select[id="phone_1"]').val();	// 통신사
+        	var m_second = $('input[id="phone_2"]').val();	// 첫 번째
+        	var m_third = $('input[id="phone_3"]').val();	// 두 번째
+
+			var member_chk = chk_member(member_Id); 		// id 존재여부
+
+			/* ==================  ID check  ================== */
+        	if( !member_Id ) {
+        		$("#id-danger").show().html("이메일를 입력해주세요.");
+            	$("#member_Id").focus(); 
+            	return false; 
+        	} else if(!regExp.test(member_Id)) {
+		        $("#id-danger").show().html("이메일 형식과 일치 하지 않습니다.");
+				$("#member_Id").focus();
+        		return false;
+        	} else if(idck == "" || idck == 0) {
+		        $("#id-danger").show().html("중복확인을 진행 해주세요.");
+				$("#member_Id").focus();
+            	return false; 
+        	}
+
+			/* ================== Password Check ================== */
+        	if( !member_Pw ) {
+        		$("#pwd-danger").show().html("비밀번호를 입력해주세요.");
+				$("#member_Pw").focus();
+            	return false;
+        	} else if( !member_Pw_chk ) {
+        		$("#pwd-danger").show().html("비밀번호를 재입력 해주세요.");
+				$("#member_Pw_chk").focus();
+            	return false; 
+        	} else if(member_Pw != member_Pw_chk) {
+        		$("#pwd-danger").show().html("숫자 + 영문자를 혼용하여야 합니다.");
+            	return false; 
+        	}
+
+			/* ================== Nickname Check ================== */
+    		if( !member_Name ) {
+        		$("#name-danger").show().html("이름을 입력해주세요.");
+    			$("#member_Name").focus();
+    			return false;
+    		} else if(member_Name.length > 20) {
+        		$("#name-danger").show().html("이름을 입력해주세요.");
+    			$("#member_Name").focus();
+    			return false;
+    		}
+
+			/* ================== Phone Check ================== */
+    		if( m_first == "" || !m_second || !m_third ) {
+    			$("#phone-danger").show().html("휴대폰 번호를 입력해주세요.");
+    			$("select[name='member_Phone']").focus();
+    			return false;
+    		} else {
+    			if((pattern_num.test(m_second)) && !(pattern_eng.test(m_second)) && !(pattern_spc.test(m_second)) && !(pattern_kor.test(m_second)) 
+    				&& (pattern_num.test(m_third)) && !(pattern_eng.test(m_third)) && !(pattern_spc.test(m_third)) && !(pattern_kor.test(m_third))) {
+
+        		} else {
+        			$("#phone-danger").show().html("특수 문자를 사용할수 없습니다.");
+        			$("input[name='member_Phone']").focus();
+        			return false;
+        		}
+    		}
+
+			/* ================== Post Check ================== */
+    		if( !member_Zip || !member_Addr1 ) {
+    			$("#post-danger").show().html("주소를 선택해주세요.");
+    			$("#addr1").focus();
+    			return false;
+    		}
+
+    		/* =================== 이용약관 =================== */
+			if($('input[name="terms_chk"]:checked').length == 2) {
+				member_chk.success(function(data) {
+					member_chk = data.cnt;
+
+		    		if(!member_Id) {
+		        		$("#id-danger").show().html("이메일를 입력해주세요.");
+		    	        $("#member_Id").focus();
+		    			return false;
+		    		} else if(member_chk == 1) {
+		        		$("#id-danger").show().html("이미 등록된 이메일입니다. <a href='/member/search_password'>비밀번호 찾기 바로가기</a>");
+		        		$("#member_Id").focus();
+		        		return false;
+		    		} else if(!regExp.test(member_Id)) {
+				        $("#id-danger").show().html("이메일 형식과 일치 하지 않습니다.");
+		    	        $("#member_Id").focus();
+		    			return false;
+		    		} else {
+
+			            var objParams = {
+			            					"id" 			:	member_Id, 
+			            					"pw_01" 		:	member_Pw,
+			            					"pw_02" 		:	member_Pw_chk,
+			            					"name" 			:	member_Name,
+			            					"m_first" 		:	m_first,
+			            					"m_second" 		:	m_second,
+			            					"m_third" 		:	m_third,
+			            					"phone" 		:	member_Phone,
+			            					"zip" 			: 	member_Zip,
+			            					"addr1"			:	member_Addr1,
+			            					"addr2"			:	member_Addr2
+			            				};
+			            
+			            $.ajax({
+			        		url	: "/member/member_signup",
+			        		enctype : "multipart/form-data",
+			        		dataType : "json",
+			        		type : "POST",
+			        		data : objParams,
+			        		success : function(data) {
+			        			var html = "";
+
+			        			if(data == "0") {
+			        				alert("잘못된 접근입니다");
+			        			} else {
+						            html += "<div class='wrap-loading'>";
+						            html += "	<div>";
+							        html += "		<div class='signUpSuccess'>";
+							        html += "			<h2>회원가입 완료</h2>";
+							        html += "			<p>입력하신 이메일로 인증메일이 전송 되었습니다.<br />인증 후 로그인을 하실 수 있습니다.</p>";
+							        html += "			<a href='./login?code=OK' class=''>로그인 페이지로 이동</a>";
+							        html += "		</div>";
+							        html += "	</div>";
+						            html += "</div>";
+
+						            $('body').append(html);
+			        			}
+			        		}, beforeSend: function() {
+			        			$('.wrap-loading').removeClass('display-none');
+							}, complete: function() {
+
+							}, error: function(error) {
+								console.log(error);
+			        		}
+			            });
+		    		}
+				});
+			} else {
+		        $("#terms-danger").show().html("모든 약관에 동의 하셔야 회원가입이 진행 가능합니다.");
+    			return false;
+			}
+        });
 
     	/* ====================== 프로필 업로드 ======================= */
     	function fileUpload(input) {
@@ -59,107 +216,6 @@ jQuery(function($) {
                 });
     		}
     	}
-
-		/* ==================== 메인 이용약관 / 개인정보보호 체크 ==================== */
-		$('label[for="all_terms"]').click(function(e) {
-			$(this).toggleClass('active');
-
-			if($(this).hasClass('active')) {
-				$(this).find("input:checkbox[name='all_terms_chk']").prop("checked", true);
-				$(this).find("img").attr("src", "../resources/image/icon/chk_on.png");
-			} else {
-				$(this).find("input:checkbox[name='all_terms_chk']").prop("checked", false);
-				$(this).find("img").attr("src", "../resources/image/icon/chk_off.png");
-			}
-
-			if($("input:checkbox[name='all_terms_chk']").is(':checked')) {
-				$("input:checkbox[name='terms_chk']").prop("checked", true);
-				$("input:checkbox[name='terms_chk']").next('img').attr("src", "../resources/image/icon/chk_on.png");
-			} else {
-				$("input:checkbox[name='terms_chk']").prop("checked", false);
-				$("input:checkbox[name='terms_chk']").next('img').attr("src", "../resources/image/icon/chk_off.png");
-			}
-		});
-
-		/* ==================== 서브 이용약관 / 개인정보보호 체크 ==================== */
-		$('label[for="termsUse"]').click(function(e) {
-			$(this).toggleClass('active');
-
-			if($(this).hasClass('active')) {
-				$(this).find("input[type='checkbox']").prop("checked", true);
-				$(this).find('img').attr("src", "../resources/image/icon/chk_on.png");
-			} else {
-				$(this).find("input[type='checkbox']").prop("checked", false);
-				$(this).find('img').attr("src", "../resources/image/icon/chk_off.png");
-			}
-
-			$("input[name='terms_chk']:checked").each(function(index, value) {
-				var $this = $('label[for="all_terms"]');
-
-				if(index == 1) {
-					$this.addClass('active');
-					$this.find("input:checkbox[name='all_terms_chk']").prop("checked", true);
-					$this.find("img").attr("src", "../resources/image/icon/chk_on.png");
-				} else {
-					$this.removeClass('active');
-					$this.find("input:checkbox[name='all_terms_chk']").prop("checked", false);
-					$this.find("img").attr("src", "../resources/image/icon/chk_off.png");
-				}
-			});
-		});
-
-		/* ============================================================ */
-		$('#open_txt_1').click( function() {
-			var html = "";
-
-			html += "<div class='term'>";
-			html += "	<span id='close'><img src='../resources/image/icon/close.png' alt='close' /></span>";
-			html += "	<div id='check_use' class='check'></div>";
-			html += "</div>";
-
-			$('#terms_txt_01').css('display','block').html(html);
-			$('#check_use').load('../terms/termsUse #mTerms');
-			
-			termsClose();
-		});
-
-		/* ============================================================ */
-		$('#open_txt_2').click( function() {
-			var html = "";
-
-			html += "<div class='term'>";
-			html += "	<span id='close'><img src='../resources/image/icon/close.png' alt='close' /></span>";
-			html += "	<div id='check_pri' class='check'></div>";
-			html += "</div>";
-
-			$('#terms_txt_02').css('display','block').html(html);
-			$('#check_pri').load('../terms/termsPrivacy #mTerms');
-			
-			termsClose();
-		});
-
-		/* ============================================================ */
-		function termsClose() {
-			$('span#close').click(function() {
-				$('.txt_content div').css('display','none');
-			});
-		}
-
-		/* ============================================================ */
-		$('#next').click(function() {
-    		if($("input:checkbox[id='check_1']").is(":checked") == false) {
-        		$("#terms-danger").show().html("모든 약관에 동의 하셔야 회원가입이 진행 가능합니다.");
-            	$("input:checkbox[id='check_1']").focus(); 
-    			return false;
-    		} else if($("input:checkbox[id='check_2']").is(":checked") == false) {
-        		$("#terms-danger").show().html("모든 약관에 동의 하셔야 회원가입이 진행 가능합니다.");
-            	$("input:checkbox[id='check_2']").focus(); 
-    			return false;
-    		} else {
-    			$('#terms').css('display','none');
-    			$('#signup').css('display','block');
-    		}
-		});
 
 		/* ==================== 네이버 로그인 code ==================== */
 		$('li[name="naverLogin"]').click(function(e) {
@@ -559,167 +615,6 @@ jQuery(function($) {
 		    			}
     		});
 		}
-		
-		/* ==================  Sign Up  ================== */
-        $('#btn_signup').click( function() {
-        	$('.alert').hide();
-
-    		var pattern_num = /[0-9]/;					// 숫자
-        	var pattern_eng = /[a-zA-Z]/;				// 문자 
-        	var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
-        	var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 		// 한글체크
-
-        	var member_Id = $("#member_Id").val();
-        	var member_Pw = $("#member_Pw").val();
-        	var member_Pw_chk = $("#member_Pw_chk").val();
-        	var member_Name = $("#member_Name").val();
-        	var member_Phone = "";
-
-        	var member_Zip = $("#zip").val();
-        	var member_Addr1 = $("#addr1").val();
-        	var member_Addr2 = $("#addr2").val();
-
-        	var m_first = $('select[id="phone_1"]').val();	// 통신사
-        	var m_second = $('input[id="phone_2"]').val();	// 첫 번째
-        	var m_third = $('input[id="phone_3"]').val();	// 두 번째
-
-			var member_chk = chk_member(member_Id); 		// id 존재여부
-			
-			/* ==================  ID check  ================== */
-        	if( !member_Id ) {
-        		$("#id-danger").show().html("이메일를 입력해주세요.");
-            	$("#member_Id").focus(); 
-            	return false; 
-        	} else if(!regExp.test(member_Id)) {
-		        $("#id-danger").show().html("이메일 형식과 일치 하지 않습니다.");
-				$("#member_Id").focus();
-        		return false;
-        	} else if(idck == "" || idck == 0) {
-		        $("#id-danger").show().html("중복확인을 진행 해주세요.");
-				$("#member_Id").focus();
-            	return false; 
-        	}
-
-			/* ================== Password Check ================== */
-        	if( !member_Pw ) {
-        		$("#pwd-danger").show().html("비밀번호를 입력해주세요.");
-				$("#member_Pw").focus();
-            	return false;
-        	} else if( !member_Pw_chk ) {
-        		$("#pwd-danger").show().html("비밀번호를 재입력 해주세요.");
-				$("#member_Pw_chk").focus();
-            	return false; 
-        	} else if(member_Pw != member_Pw_chk) {
-        		$("#pwd-danger").show().html("숫자 + 영문자를 혼용하여야 합니다.");
-            	return false; 
-        	}
-
-			/* ================== Nickname Check ================== */
-    		if( !member_Name ) {
-        		$("#name-danger").show().html("이름을 입력해주세요.");
-    			$("#member_Name").focus();
-    			return false;
-    		} else if(member_Name.length > 20) {
-        		$("#name-danger").show().html("이름을 입력해주세요.");
-    			$("#member_Name").focus();
-    			return false;
-    		}
-
-			/* ================== Phone Check ================== */
-    		if( m_first == "" || !m_second || !m_third ) {
-    			$("#phone-danger").show().html("휴대폰 번호를 입력해주세요.");
-    			$("select[name='member_Phone']").focus();
-    			return false;
-    		} else {
-    			if((pattern_num.test(m_second)) && !(pattern_eng.test(m_second)) && !(pattern_spc.test(m_second)) && !(pattern_kor.test(m_second)) 
-    				&& (pattern_num.test(m_third)) && !(pattern_eng.test(m_third)) && !(pattern_spc.test(m_third)) && !(pattern_kor.test(m_third))) {
-
-        		} else {
-        			$("#phone-danger").show().html("특수 문자를 사용할수 없습니다.");
-        			$("input[name='member_Phone']").focus();
-        			return false;
-        		}
-    		}
-
-			/* ================== Post Check ================== */
-    		if( !member_Zip || !member_Addr1 ) {
-    			$("#post-danger").show().html("주소를 선택해주세요.");
-    			$("#addr1").focus();
-    			return false;
-    		}
-
-    		/* =================== 이용약관 =================== */
-			if($('input[name="terms_chk"]:checked').length == 2) {
-				member_chk.success(function(data) {
-					member_chk = data.cnt;
-
-		    		if(!member_Id) {
-		        		$("#id-danger").show().html("이메일를 입력해주세요.");
-		    	        $("#member_Id").focus();
-		    			return false;
-		    		} else if(member_chk == 1) {
-		        		$("#id-danger").show().html("이미 등록된 이메일입니다. <a href='/member/search_password'>비밀번호 찾기 바로가기</a>");
-		        		$("#member_Id").focus();
-		        		return false;
-		    		} else if(!regExp.test(member_Id)) {
-				        $("#id-danger").show().html("이메일 형식과 일치 하지 않습니다.");
-		    	        $("#member_Id").focus();
-		    			return false;
-		    		} else {
-
-			            var objParams = {
-			            					"id" 			:	member_Id, 
-			            					"pw_01" 		:	member_Pw,
-			            					"pw_02" 		:	member_Pw_chk,
-			            					"name" 			:	member_Name,
-			            					"m_first" 		:	m_first,
-			            					"m_second" 		:	m_second,
-			            					"m_third" 		:	m_third,
-			            					"phone" 		:	member_Phone,
-			            					"zip" 			: 	member_Zip,
-			            					"addr1"			:	member_Addr1,
-			            					"addr2"			:	member_Addr2
-			            				};
-			            
-			            $.ajax({
-			        		url	: "/member/member_signup",
-			        		enctype : "multipart/form-data",
-			        		dataType : "json",
-			        		type : "POST",
-			        		data : objParams,
-			        		success : function(data) {
-			        			var html = "";
-
-			        			if(data == "0") {
-			        				alert("잘못된 접근입니다");
-			        			} else {
-						            html += "<div class='wrap-loading'>";
-						            html += "	<div>";
-							        html += "		<div class='signUpSuccess'>";
-							        html += "			<h2>회원가입 완료</h2>";
-							        html += "			<p>입력하신 이메일로 인증메일이 전송 되었습니다.<br />인증 후 로그인을 하실 수 있습니다.</p>";
-							        html += "			<a href='./login?code=OK' class=''>로그인 페이지로 이동</a>";
-							        html += "		</div>";
-							        html += "	</div>";
-						            html += "</div>";
-
-						            $('body').append(html);
-			        			}
-			        		}, beforeSend: function() {
-			        			$('.wrap-loading').removeClass('display-none');
-							}, complete: function() {
-
-							}, error: function(error) {
-								console.log(error);
-			        		}
-			            });
-		    		}
-				});
-			} else {
-		        $("#terms-danger").show().html("모든 약관에 동의 하셔야 회원가입이 진행 가능합니다.");
-    			return false;
-			}
-        });
 
 		/* ================================================== */
         $('#btn_update').click( function() {

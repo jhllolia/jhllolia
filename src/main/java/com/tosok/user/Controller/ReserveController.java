@@ -43,11 +43,13 @@ import com.tosok.user.Until.ProductSellList;
 import com.tosok.user.Until.SearchCriteria;
 import com.tosok.user.Until.SendSms;
 import com.tosok.user.VO.CartVO;
+import com.tosok.user.VO.ImageVO;
 import com.tosok.user.VO.MemberVO;
 import com.tosok.user.VO.PayVO;
 import com.tosok.user.VO.ProductVO;
 import com.tosok.user.VO.ReviewVO;
 import com.tosok.user.service.MemberService;
+import com.tosok.user.service.ReceipeService;
 import com.tosok.user.service.ReserveService;
 
 @Controller
@@ -68,6 +70,9 @@ public class ReserveController {
 	
 	@Autowired
 	private ProductSellList productList;
+	
+	@Autowired
+	private ReceipeService ReceipeService;
 
     @Autowired
     private SendSms sendSms;						// 문자 메세지
@@ -810,6 +815,7 @@ public class ReserveController {
 
 		/* =============== 리뷰 평균 / 카운트 ============== */
 		ReviewVO count = reserveService.selectProductReviewCount(review);
+		ImageVO param = new ImageVO();
 
 		/* =============== ============== */
 		session.removeAttribute("product");
@@ -817,8 +823,9 @@ public class ReserveController {
 		mav.addObject("REVIEW_AVG", count.getAVG_COUNT());
 		mav.addObject("REVIEW_COUNT", count.getREV_COUNT());
 		mav.addObject("myPushList", list);
-    	mav.addObject("seat", seat);								// 테이블 정보 출력
-		mav.addObject("file", reserveService.selectTableFile(vo));	// 테이블 슬라이드 이미지, 로고
+    	mav.addObject("seat", seat);										// 테이블 정보 출력
+		mav.addObject("list", ReceipeService.selectGallayTotalImage(param));	// 갤러
+		mav.addObject("file", reserveService.selectTableFile(vo));			// 테이블 슬라이드 이미지, 로고
     	mav.setViewName("/product/product_Table");
     	return mav;
     }

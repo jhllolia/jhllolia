@@ -26,6 +26,11 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <beans:bean class="com.tosok.user.Interceptor.CommonInterceptor"></beans:bean>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
             <mvc:mapping path="/info/**"/>
             <mvc:mapping path="/pay/**"/>
             <mvc:mapping path="/cart/**"/>
@@ -49,6 +54,7 @@
             <mvc:mapping path="/tab/**"/>
             <beans:bean class="com.tosok.user.Interceptor.ProductInterceptor"></beans:bean>
         </mvc:interceptor>
+
     </mvc:interceptors>
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

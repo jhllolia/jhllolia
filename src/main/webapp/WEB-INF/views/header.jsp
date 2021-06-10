@@ -21,12 +21,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
 <meta name="HandheldFriendly" content="true" />
 
-<meta name="description" content="속 꽉 찬 진한 맛 전주 토속 찰순대,피순대,김치순대,막창순대 전문 쇼핑몰">
+<meta name="description" content="속 꽉 찬 진한 맛 전주 토속 찰순대,왕순대,피순대,김치순대,막창순대 전문 쇼핑몰">
 <meta property="og:type" content="website">
 <meta property="og:title" content="어양토속식품">
-<meta property="og:description" content="속 꽉 찬 진한 맛 전주 토속 찰순대,피순대,김치순대,막창순대 전문 쇼핑몰">
+<meta property="og:description" content="속 꽉 찬 진한 맛 전주 토속 찰순대,왕순대,피순대,김치순대,막창순대 전문 쇼핑몰">
 <meta property="og:image" content="https://www.tosok.co.kr/resources/image/icon/footer_logo.png">
 <meta property="og:url" content="https://www.tosok.co.kr">
 
@@ -55,11 +57,6 @@
 <link rel="stylesheet" href="/resources/css/menu.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.css?ver=<%=System.currentTimeMillis() %>" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" />
-
-<!--
-<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean" rel="stylesheet">
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.0.min.js"></script>
--->
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/main.js?ver=<%=System.currentTimeMillis() %>"></script>

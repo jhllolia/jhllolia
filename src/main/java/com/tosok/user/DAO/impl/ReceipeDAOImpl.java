@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.tosok.user.DAO.ReceipeDAO;
 import com.tosok.user.Until.Criteria;
 import com.tosok.user.VO.CommentVO;
+import com.tosok.user.VO.ImageVO;
 import com.tosok.user.VO.ReceipeVO;
 
 @Repository("ReceipeDAO")
@@ -107,5 +108,29 @@ public class ReceipeDAOImpl implements ReceipeDAO {
 		sqlSession.update("deleteChildComment", child);
 	}
 
+	@Override
+	public int insertGallaryData(ImageVO vo) {
+		return sqlSession.insert("insertGallaryData", vo);
+	}
+
+	@Override
+	public List<ImageVO> selectGallayTotalImage(ImageVO vo) {
+		return sqlSession.selectList("selectGallayTotalImage", vo);
+	}
+
+	@Override
+	public void updateGallaryData(ImageVO vo) {
+		sqlSession.update("updateGallaryData", vo);
+	}
+
+	@Override
+	public int deleteGallaryData(ImageVO vo) {
+		return sqlSession.delete("updateGallaryData", vo);
+	}
+
+	@Override
+	public int selectGallaryCnt(ImageVO vo) {
+		return sqlSession.selectOne("selectGallaryCnt", vo);
+	}
 
 }

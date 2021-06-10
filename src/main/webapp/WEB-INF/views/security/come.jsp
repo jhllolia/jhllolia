@@ -44,6 +44,7 @@
 					<tr>
 						<td>번호</td>
 						<td>접속 IP</td>
+						<td></td>
 						<td>접속 시간</td>
 						<td>이전 URL</td>
 						<td>접속 기기</td>
@@ -62,6 +63,7 @@
 									<td>${dto.visit_id}</td>
 									<td><span id="visitIp" class="visitIp">${dto.visit_ip}</span></td>
 									<td><fmt:formatDate value="${dto.visit_time}" pattern="yyyy.MM.dd HH:MM:SS"/></td>
+									<td>${dto.visit_product}</td>
 									<c:choose>
 										<c:when test="${ empty dto.visit_refer }">
 											<td>X</td>
